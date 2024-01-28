@@ -28,10 +28,10 @@ export const configValidation = {
 
  const apiConfig = {
     url: 'https://api.mesto.evelina.nomoredomainsmonster.ru/',
-    headers: {
-       authorization: '2c619271-7a2d-4266-95fe-47db284f8454',
-       "Content-Type": "application/json",
-     }
+   //  headers: {
+   //     authorization: '2c619271-7a2d-4266-95fe-47db284f8454',
+   //     "Content-Type": "application/json",
+   //   }
    }
 
 export default apiConfig;

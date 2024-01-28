@@ -1,14 +1,10 @@
 export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru/';
 
-export const getReq = (url, options) => {
-  return fetch(url, options)
-    .then((res) => {
-      if (res.ok) {
-        return res.json()
-      }
-
-      throw new Error('Что-то пошло не так')
-    })
+function  getReq(res){
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка ${res.status}`);
 }
 
 

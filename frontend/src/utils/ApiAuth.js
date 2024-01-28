@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'http://api.mesto.evelina.nomoredomainsmonster.ru/';
 
 export const getRequest= (url, options) => {
   return fetch(url, options)

@@ -27,7 +27,7 @@ export const configValidation = {
 
 
  const apiConfig = {
-    url: 'https://mesto.nomoreparties.co/v1/cohort-76',
+    url: 'http://api.mesto.evelina.nomoredomainsmonster.ru/',
     headers: {
        authorization: '2c619271-7a2d-4266-95fe-47db284f8454',
        "Content-Type": "application/json",

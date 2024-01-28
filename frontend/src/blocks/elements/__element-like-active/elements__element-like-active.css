@@ -1,0 +1,17 @@
+.elements__element-like-active{
+        width: 22px;
+        height: 19px;
+        background-image: url(../../../images/Union.svg);
+        border: none;
+        background-color: rgba(0, 0, 0, 0);
+        transition: 0.5s;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        padding: 0;
+        
+    }
+    
+
+    .elements__element-like-active:hover{
+        opacity: 100;
+    }

@@ -1,0 +1,22 @@
+.header__container{
+   display: flex;
+   gap: 24px;
+
+}
+
+/* @media screen and (max-width:640px) {
+    .header__wrapper {
+        max-width: 85%;
+        min-height: 65px;
+        padding-top: 32px;
+    }
+}
+
+@media screen and (max-width:320px) {
+    .header__wrapper {
+        max-width: 320px;
+        min-height: 56px;
+        padding-top: 28px;
+
+    }
+} */

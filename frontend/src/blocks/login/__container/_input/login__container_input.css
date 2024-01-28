@@ -1,0 +1,5 @@
+.login__container_input{
+    display: flex;
+    gap: 13px;
+    flex-direction: column;
+}

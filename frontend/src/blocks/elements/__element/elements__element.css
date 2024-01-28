@@ -1,0 +1,14 @@
+.elements__element {
+    padding-left: 0;
+    margin-bottom: 0;
+    column-gap: 17px;
+    row-gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0;
+    list-style: none;
+    justify-content: center;
+}
+
+
+

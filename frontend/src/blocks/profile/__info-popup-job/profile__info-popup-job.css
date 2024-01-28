@@ -1,0 +1,23 @@
+
+.profile__info-popup-job{
+    max-width: 336px;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0;
+    padding-left: 0;
+    margin-bottom: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+@media screen and (min-width:320px) and (max-width:877px) {
+    .profile__info-popup-job {
+        font-size: 14px;
+        text-align: center;
+        max-width: 282px;
+      }
+}

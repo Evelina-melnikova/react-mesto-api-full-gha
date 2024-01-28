@@ -1,0 +1,29 @@
+.popup__save-button-invalid {
+    border-radius: 2px;
+    border: 1px solid #C4C4C4;
+    background-color: #FFF;
+    width: 358px;
+    color: #C4C4C4;
+    height: 50px;
+    margin-left: 36px;
+    padding: 0;
+    margin-top: 34px;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 37px;
+    cursor: default;
+}
+
+@media screen and (min-width:320px) and (max-width:639px) {
+    .popup__save-button-invalid {
+        margin-top: 31px;
+        margin-left: 22px;
+        width: 238px;
+        height: 46px;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
+}

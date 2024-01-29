@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 const { json } = require('express');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -20,7 +21,7 @@ app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-}); 
+});
 app.listen(PORT, () => {
   console.log(`Запущен порт: ${PORT}`);
 });

@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru/';
+export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
 function  getReq(res){
   if (res.ok) {

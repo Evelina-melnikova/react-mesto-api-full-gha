@@ -8,12 +8,12 @@ https://github.com/Evelina-melnikova/react-mesto-api-full-gha.git
 ---
 ## Ссылки на проект
 
-IP-адрес:
+*IP-адрес*:
 158.160.122.105
 ---
-Frontend:
+*Frontend*:
 https://mesto.evelina.nomoredomainsmonster.ru;
 ---
-Backend:
+*Backend*:
 https://api.mesto.evelina.nomoredomainsmonster.ru
 ---

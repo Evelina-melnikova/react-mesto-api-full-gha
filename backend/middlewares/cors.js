@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 const allowedCors = [
     'https://api.mesto.evelina.nomoredomainsmonster.ru/sign-in',
     'https://mesto.evelina.nomoredomainsmonster.ru/sign-in',
@@ -9,8 +10,7 @@ const allowedCors = [
       res.header('Access-Control-Allow-Origin', origin);
       res.header('Access-Control-Allow-Credentials', true);
     }
-    const { method } = req; 
-  
+    const { method } = req;
     const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
     const requestHeaders = req.headers['access-control-request-headers'];
     if (method === 'OPTIONS') {

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/order */
 const { json } = require('express');
 const express = require('express');

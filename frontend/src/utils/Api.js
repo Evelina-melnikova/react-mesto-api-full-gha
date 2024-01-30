@@ -7,63 +7,81 @@ class Api {
     }
 
     _getRequest(url, options) {
-        return fetch(url, options)
-            .then((res) => {
-                if (res.ok) {
-                    return res.json()
-                }
-
-                throw new Error('Что-то пошло не так')
-            })
+        return fetch(options, url).then((res) => {
+            if (!res.ok) {
+                return Promise.reject(`Ошибка: ${res.status}`);
+            }
+            return res.json();
+        });
     }
 
     getAllCards() {
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/cards`, {
-            method: 'GET',
-            headers: this._headers
-        })
+            method: "GET",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+        });
     };
 
     createCard(data) {
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/cards`, {
-            method: 'POST',
-            headers: this._headers,
+            method: "POST",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
                 name: data.name,
-                link: data.link
+                link: data.link,
+            }),
+        });
+    }
+
+    deleteCard(data) {
+        const token = localStorage.getItem('token');
+        return this._getRequest(`${this._url}/cards/${data}`, {
+            method: "DELETE",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+        });
+    }
+
+    getNewAvatar(item) {
+        const token = localStorage.getItem('token');
+        return this._getRequest(`${this._url}/users/me/avatar`, {
+            method: "PATCH",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                avatar: item['avatar'],
             })
         })
     }
 
-    deleteCard(data) {
-        return this._getRequest(`${this._url}/cards/${data}`,
-            {
-                method: 'DELETE',
-                headers: this._headers
-
-            })
-    }
-
-    getNewAvatar(item) {
-        return this._getRequest(`${this._url}/users/me/avatar`, {
-            method: 'PATCH',
-            headers: this._headers,
-            body: JSON.stringify({
-                avatar: item['avatar'],
-            }),
-        }
-        )
-    }
-
     setlikeApi(id, isLiked) {
+        const token = localStorage.getItem('token');
         return isLiked
             ? this._getRequest(`${this._url}/cards/${id}/likes`, {
-                method: 'PUT',
-                headers: this._headers,
+                method: "PUT",
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
             })
             : this._getRequest(`${this._url}/cards/${id}/likes`, {
-                method: 'DELETE',
-                headers: this._headers,
+                method: "DELETE",
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
             });
     }
 
@@ -77,26 +95,31 @@ class Api {
     // }
 
     setUserInfo(data) {
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/users/me`, {
-            method: 'PATCH',
-            headers: this._headers,
+            method: "PATCH",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
                 name: data.name,
-                about: data.about
+                about: data.about,
             }),
-        }
-        )
+        });
     }
 
     getUserInfo() {
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/users/me`, {
-            method: 'GET',
-            headers: this._headers
-        })
-
+            method: "GET",
+            headers: {
+                authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+        });
     }
 }
-
 const api = new Api(apiConfig);
 
 export default api;

@@ -10,6 +10,9 @@ export const configValidation = {
 
  const apiConfig = {
     url: 'https://api.mesto.evelina.nomoredomainsmonster.ru',
+    headers: {
+      "Content-Type": "application/json",
+    },
    }
 
 export default apiConfig;

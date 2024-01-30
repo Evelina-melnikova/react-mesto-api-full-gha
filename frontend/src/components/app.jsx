@@ -242,20 +242,22 @@ export default function App() {
         <div className="page">
           <Header email={userEmail} onSignOut={onSignOut} />
           <Routes>
-            <Route path='/'
-                element={<ProtectedRoute
-                loggedIn={isloggedIn}
-                element={Main}
-                cards={cards}
-                currentUser={currentUser}
-                onEditProfile={handleEditProfileClick}
-                onEditAvatar={handleEditAvatarClick}
-                onSelectDeleteCard={setSelectedDeleteCard}
-                onCardClick={setSelectedCard}
-                onCardLike={handleCardLike}
-                onAddPlace={handleAddCardsClick}
-                onDeletePopup={handleDeletePopupClick}
-              />} />
+            <Route
+              path='/'
+              element={
+                <ProtectedRoute
+                  loggedIn={isloggedIn}
+                  element={Main}
+                  cards={cards}
+                  currentUser={currentUser}
+                  onEditProfile={handleEditProfileClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onSelectDeleteCard={setSelectedDeleteCard}
+                  onCardClick={setSelectedCard}
+                  onCardLike={handleCardLike}
+                  onAddPlace={handleAddCardsClick}
+                  onDeletePopup={handleDeletePopupClick}
+                />} />
             <Route path='/sign-up'
               element={<Register
                 onRegister={onRegister}
@@ -270,7 +272,7 @@ export default function App() {
                 isOpen={isToolTipOpen}
                 isloggedIn={isloggedIn}
               />} />
-              
+
           </Routes>
           {isloggedIn && <Footer />}
 

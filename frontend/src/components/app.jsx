@@ -19,103 +19,104 @@ import Login from './login';
 import InfoToolTip from './info-tool-tip';
 import Register from './register';
 
+
 export default function App() {
-  const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
-  const [isAddCardsPopupOpen, setAddCardsPopup] = useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDeletePopupOpen, setDeletePopup] = useState(false);
-  const [selectedDeleteCard, setSelectedDeleteCard] = useState({});
-  const [selectedCard, setSelectedCard] = useState({});
-  const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState({});
-  const [userEmail, setUserEmail] = useState('');
+  // const navigateRef = useRef(navigate);
+
+  const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
+  const [isAddCardsPopupOpen, setAddCardsPopup] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isToolTipOpen, setIsToolTipOpen] = React.useState(false);
+  const [isSucsessed, setIsSucsessed] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [error, setError] = React.useState({});
+  const [cards, setCards] = React.useState([]);
+  const [isloggedIn, setIsLoggedIn] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isDeletePopupOpen, setDeletePopup] = React.useState(false);
+  const [selectedDeleteCard, setSelectedDeleteCard] = React.useState({});
+  const [userEmail, setUserEmail] = React.useState('');
   const navigate = useNavigate();
-  const navigateRef = useRef(navigate);
-  const [isToolTipOpen, setIsToolTipOpen] = useState(false);
-  const [isSucsessed, setIsSucsessed] = useState(false);
-  const [isloggedIn, setIsLoggedIn] = useState(false);
-  const [error, setError] = useState({});
-
-
-
-
-  const handleEditAvatarClick = () => {
-    setEditAvatarPopup(true);
-  };
-
-  const handleEditProfileClick = () => {
-    setEditProfilePopup(true);
-  };
-
-  const handleAddCardsClick = () => {
-    setAddCardsPopup(true);
-  };
-
-  const handleDeletePopupClick = () => {
-    setDeletePopup(true);
-  }
-
-  const closeAllPopups = () => {
-    setEditAvatarPopup(false);
-    setEditProfilePopup(false);
-    setSelectedCard({});
-    setSelectedDeleteCard({});
-    setAddCardsPopup(false);
-    setDeletePopup(false);
-    setIsToolTipOpen(false);
-  }
-
-  const auth = useCallback(async (jwt) => {
-    try {
-      const res = await ApiAuth.getContent(jwt);
-      if (res) {
-        setIsLoggedIn(true);
-        setUserEmail(res.data.email);
-        navigate('/');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }, [setIsLoggedIn, setUserEmail, navigate]);
-
-  const onRegister = (password, email) => {
-    return ApiAuth.register(password, email).then((res) => {
-      setIsSucsessed(true);
-      setIsToolTipOpen(true);
-      return res;
-    }).catch((err) => {
-      setIsSucsessed(false);
-      setIsToolTipOpen(true);
-      setError(err);
-    })
-  }
 
   const onSignOut = () => {
-    removeToken();
+    localStorage.removeItem("token");
+    navigate("/signin");
     setUserEmail('');
     setIsLoggedIn(false);
-    navigate('/login');
   };
 
   const onLogin = (password, email) => {
-    return ApiAuth.authorize(password, email)
-      .then((data) => {
-        if (data.token) {
-          setToken(data.token);
+      return ApiAuth.authorize(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem("token", res.token);
           setIsLoggedIn(true);
-          navigate('/');
-          return data;
-        } else {
-          return;
+          navigate("/", { replace: true });
         }
-      }).catch((err) => {
-        setIsSucsessed(false);
-        setIsToolTipOpen(true);
-        setError(err);
       })
+      .catch((err) => {
+        setError(err);
+        setIsToolTipOpen(true);
+        setIsSucsessed(false);
+      });
   }
 
+  const onRegister = (email, password) => {
+    return ApiAuth.register(email, password)
+      .then(() => {
+        setIsToolTipOpen(true);
+        setIsSucsessed(true);
+        navigate("/", { replace: true });
+      })
+      .catch((err) => {
+        setError(err);
+        setIsToolTipOpen(true);
+        setIsSucsessed(false);
+      });
+
+  }
+
+  function handleEditAvatarClick() {
+    setEditAvatarPopup(true);
+  }
+
+  function handleEditProfileClick() {
+    setEditProfilePopup(true);
+  }
+
+  function handleAddCardsClick() {
+    setAddCardsPopup(true);
+  }
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
+  }
+
+  function handleDeletePopupClick() {
+    setDeletePopup(true);
+  }
+
+  function closeAllPopups() {
+    handleEditProfileClick(false);
+    handleAddCardsClick(false);
+    handleEditAvatarClick(false);
+    setSelectedCard({});
+    isToolTipOpen(false);
+  }
+
+  // const auth = useCallback(async (jwt) => {
+  //   try {
+  //     const res = await ApiAuth.getContent(jwt);
+  //     if (res) {
+  //       setIsLoggedIn(true);
+  //       setUserEmail(res.data.email);
+  //       navigate('/');
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);
@@ -127,10 +128,11 @@ export default function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-
-    api.setlikeApi(card._id, !isLiked)
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((c) => (c._id === card._id ? newCard : c))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -201,40 +203,67 @@ export default function App() {
       });
   }
 
-  useEffect(() => {
-    api.getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    api.getAllCards()
-      .then(data => {
-        setCards(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-
-
-  useEffect(() => {
-    const jwt = getToken();
-
-    if (jwt) {
-      auth(jwt);
-    }
-  }, [auth]);
-
   // useEffect(() => {
-  //   const initialRoute = '/';
-  //   navigateRef.current(initialRoute);
+  //   api.getUserInfo()
+  //     .then((data) => {
+  //       setCurrentUser(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+
+  //   api.getAllCards()
+  //     .then(data => {
+  //       setCards(data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
   // }, []);
 
 
+
+  // useEffect(() => {
+  //   const jwt = getToken();
+
+  //   if (jwt) {
+  //     auth(jwt);
+  //   }
+  // }, [auth]);
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("token");
+    if (jwt) {
+      ApiAuth.getContent(jwt)
+        .then((res) => {
+          navigate("/");
+          setUserEmail(res.email);
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      api
+        .getUserInfoApi()
+        .then((data) => {
+          setCurrentUser(data);
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      api
+        .getAllCards()
+        .then((data) => {
+          setCards(data);
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [isloggedIn, navigate]);
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CardsContext.Provider value={cards}>
@@ -253,7 +282,7 @@ export default function App() {
                   onEditProfile={handleEditProfileClick}
                   onEditAvatar={handleEditAvatarClick}
                   onSelectDeleteCard={setSelectedDeleteCard}
-                  onCardClick={setSelectedCard}
+                  onCardClick={handleCardClick}
                   onCardLike={handleCardLike}
                   onAddPlace={handleAddCardsClick}
                   onDeletePopup={handleDeletePopupClick}

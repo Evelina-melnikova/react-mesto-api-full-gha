@@ -1,18 +1,19 @@
 import apiConfig from './constants.js';
 
-class Api {
+export default class Api {
     constructor({ url, headers }) {
         this._url = url;
         this._headers = headers;
     }
 
-    _getRequest(url, options) {
-        return fetch(options, url).then((res) => {
-            if (!res.ok) {
-                return Promise.reject(`Ошибка: ${res.status}`);
-            }
-            return res.json();
-        });
+    _getRequest(options, url) {
+        return fetch(options, url)
+            .then((res) => {
+                if (!res.ok) {
+                    return Promise.reject(`Ошибка: ${res.status}`);
+                }
+                return res.json();
+            });
     }
 
     getAllCards() {
@@ -122,4 +123,4 @@ class Api {
 }
 const api = new Api(apiConfig);
 
-export default api;
+// export default api;

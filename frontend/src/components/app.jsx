@@ -103,7 +103,7 @@ export default function App() {
     handleAddCardsClick(false);
     handleEditAvatarClick(false);
     setSelectedCard({});
-    // isInfoToolTip(false);
+    isToolTipOpen(false);
   }
 
   // const auth = useCallback(async (jwt) => {

@@ -22,60 +22,59 @@ import Register from './register';
 
 
 export default function App() {
-  // const navigateRef = useRef(navigate);
-
-  const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
-  const [isAddCardsPopupOpen, setAddCardsPopup] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [isToolTipOpen, setIsToolTipOpen] = React.useState(false);
-  const [isSucsessed, setIsSucsessed] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [error, setError] = React.useState({});
-  const [cards, setCards] = React.useState([]);
-  const [isloggedIn, setIsLoggedIn] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isDeletePopupOpen, setDeletePopup] = React.useState(false);
-  const [selectedDeleteCard, setSelectedDeleteCard] = React.useState({});
-  const [userEmail, setUserEmail] = React.useState('');
+  const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
+  const [isAddCardsPopupOpen, setAddCardsPopup] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeletePopupOpen, setDeletePopup] = useState(false);
+  const [selectedDeleteCard, setSelectedDeleteCard] = useState({});
+  const [selectedCard, setSelectedCard] = useState({});
+  const [cards, setCards] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
+  // const navigateRef = useRef(navigate);
+  const [isToolTipOpen, setIsToolTipOpen] = useState(false);
+  const [isSucsessed, setIsSucsessed] = useState(false);
+  const [isloggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState({});
 
   const onSignOut = () => {
-    localStorage.removeItem("token");
-    navigate("/signin");
+    removeToken();
+    navigate('/login');
     setUserEmail('');
     setIsLoggedIn(false);
   };
 
   const onLogin = (password, email) => {
-      return ApiAuth.authorize(email, password)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("token", res.token);
+    return ApiAuth.authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setToken(data.token);
           setIsLoggedIn(true);
-          navigate("/", { replace: true });
+          navigate('/');
+          return data;
+        } else {
+          return;
         }
-      })
-      .catch((err) => {
-        setError(err);
-        setIsToolTipOpen(true);
+      }).catch((err) => {
         setIsSucsessed(false);
-      });
+        setIsToolTipOpen(true);
+        setError(err);
+      })
   }
 
   const onRegister = (email, password) => {
-    return ApiAuth.register(email, password)
-      .then(() => {
-        setIsSucsessed(true);
-        setIsToolTipOpen(true);
-        navigate("/", { replace: true });
-      })
-      .catch((err) => {
-        setError(err);
-        setIsSucsessed(false);
-        setIsToolTipOpen(true);
-      });
-
+    return ApiAuth.register(password, email).then((res) => {
+      setIsSucsessed(true);
+      setIsToolTipOpen(true);
+      navigate('/signin');
+      return res;
+    }).catch((err) => {
+      setIsSucsessed(false);
+      setIsToolTipOpen(true);
+      setError(err);
+    })
   }
 
   function handleEditAvatarClick() {
@@ -98,26 +97,28 @@ export default function App() {
     setDeletePopup(true);
   }
 
-  function closeAllPopups() {
-    handleEditProfileClick(false);
-    handleAddCardsClick(false);
-    handleEditAvatarClick(false);
+  const closeAllPopups = () => {
+    setEditAvatarPopup(false);
+    setEditProfilePopup(false);
     setSelectedCard({});
-    isToolTipOpen(false);
+    setSelectedDeleteCard({});
+    setAddCardsPopup(false);
+    setDeletePopup(false);
+    setIsToolTipOpen(false);
   }
 
-  // const auth = useCallback(async (jwt) => {
-  //   try {
-  //     const res = await ApiAuth.getContent(jwt);
-  //     if (res) {
-  //       setIsLoggedIn(true);
-  //       setUserEmail(res.data.email);
-  //       navigate('/');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [setIsLoggedIn, setUserEmail, navigate]);
+  const auth = useCallback(async () => {
+    try {
+      const res = await ApiAuth.getContent();
+      if (res) {
+        setIsLoggedIn(true);
+        setUserEmail(res.data.email);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);
@@ -204,33 +205,33 @@ export default function App() {
       });
   }
 
-  // useEffect(() => {
-  //   api.getUserInfo()
-  //     .then((data) => {
-  //       setCurrentUser(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
+  useEffect(() => {
+    if (isloggedIn) {
+      api.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api.getAllCards()
+        .then(data => {
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isloggedIn]);
 
-  //   api.getAllCards()
-  //     .then(data => {
-  //       setCards(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
 
+  useEffect(() => {
+    const jwt = getToken();
 
-
-  // useEffect(() => {
-  //   const jwt = getToken();
-
-  //   if (jwt) {
-  //     auth(jwt);
-  //   }
-  // }, [auth]);
+    if (jwt) {
+      auth();
+    }
+  }, [auth]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("token");

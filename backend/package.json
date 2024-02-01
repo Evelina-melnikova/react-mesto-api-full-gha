@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "dev": "nodemon --inspect -- app.js",
-    "start": "node app.js"
+    "start": "node app.js",
+    "build": "react-scripts build"
   },
   "author": "Evelina Melnikova",
   "license": "ISC",

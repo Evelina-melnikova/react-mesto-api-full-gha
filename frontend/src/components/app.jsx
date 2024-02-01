@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { getToken, removeToken, setToken } from '../utils/token';
@@ -263,7 +264,7 @@ export default function App() {
         });
     }
   }, [isloggedIn, navigate]);
-  
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <CardsContext.Provider value={cards}>

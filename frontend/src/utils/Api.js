@@ -1,12 +1,12 @@
 import apiConfig from './constants.js';
 
-export default class Api {
+class Api {
     constructor({ url, headers }) {
         this._url = url;
         this._headers = headers;
     }
 
-    _getRequest(options, url) {
+    _getRequest(options,url) {
         return fetch(options, url)
             .then((res) => {
                 if (!res.ok) {
@@ -123,4 +123,4 @@ export default class Api {
 }
 const api = new Api(apiConfig);
 
-// export default api;
+export default api;

@@ -1,6 +1,6 @@
 export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
-function  getReq(res){
+function getReq(res) {
   if (res.ok) {
     return res.json();
   }
@@ -9,25 +9,29 @@ function  getReq(res){
 
 
 export const register = (password, email) => {
-  return fetch(`${BASE_URL}/sign-up`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({password, email})
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
   })
     .then(getReq)
 }
 
 export const authorize = (password, email) => {
-  return fetch(`${BASE_URL}/sign-in`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({password, email})
+    body: JSON.stringify({ 
+      email: email,
+      password: password
+     })
   })
     .then(getReq)
 }

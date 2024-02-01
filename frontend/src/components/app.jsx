@@ -28,7 +28,7 @@ export default function App() {
   const [isAddCardsPopupOpen, setAddCardsPopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
-  const [isInfoToolTip, setInfoToolTip] = React.useState(false);
+  const [isToolTipOpen, setIsToolTipOpen] = React.useState(false);
   const [isSucsessed, setIsSucsessed] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [error, setError] = React.useState({});
@@ -58,7 +58,7 @@ export default function App() {
       })
       .catch((err) => {
         setError(err);
-        setInfoToolTip(true);
+        setIsToolTipOpen(true);
         setIsSucsessed(false);
       });
   }
@@ -66,14 +66,14 @@ export default function App() {
   const onRegister = (email, password) => {
     return ApiAuth.register(email, password)
       .then(() => {
-        setInfoToolTip(true);
         setIsSucsessed(true);
+        setIsToolTipOpen(true);
         navigate("/", { replace: true });
       })
       .catch((err) => {
         setError(err);
-        setInfoToolTip(true);
         setIsSucsessed(false);
+        setIsToolTipOpen(true);
       });
 
   }
@@ -103,7 +103,7 @@ export default function App() {
     handleAddCardsClick(false);
     handleEditAvatarClick(false);
     setSelectedCard({});
-    isInfoToolTip(false);
+    // isInfoToolTip(false);
   }
 
   // const auth = useCallback(async (jwt) => {
@@ -293,13 +293,13 @@ export default function App() {
                 onRegister={onRegister}
                 isSucsessed={isSucsessed}
                 onClose={closeAllPopups}
-                isOpen={isInfoToolTip}
+                isOpen={isToolTipOpen}
               />} />
             <Route path='/sign-in'
               element={<Login
                 onLogin={onLogin}
                 onClose={closeAllPopups}
-                isOpen={isInfoToolTip}
+                isOpen={isToolTipOpen}
                 isloggedIn={isloggedIn}
               />} />
 
@@ -338,7 +338,7 @@ export default function App() {
         />
         <InfoToolTip
           isSucsessed={isSucsessed}
-          isOpen={isInfoToolTip}
+          isOpen={isToolTipOpen}
           onClose={closeAllPopups}
           error={error}
         />

@@ -6,10 +6,10 @@ const Register = ({ onRegister }) => {
   const [emailValue, setEmailValue] = React.useState('');
   const [passwordValue, setPasswordValue] = React.useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onRegister(passwordValue, emailValue);
-  }
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    onRegister({ emailValue, passwordValue });
+  };
 
   const handleEmailChange = (e) => {
     setEmailValue(e.target.value);

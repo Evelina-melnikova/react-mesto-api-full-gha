@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 const HttpCodes = require('../utils/constants');
-const setToken = require('../utils/token');
+const generateToken = require('../utils/token');
 
 const NotValidIdError = require('../utils/validationError');
 const ConflictError = require('../utils/conflictError');
@@ -125,7 +125,7 @@ const login = async (req, res, next) => {
       throw new Error('AuthorizateError');
     }
 
-    const token = setToken({ _id: userAdmin._id });
+    const token = generateToken({ _id: userAdmin._id });
     return res.status(HttpCodes.success).send(
       {
         // eslint-disable-next-line max-len

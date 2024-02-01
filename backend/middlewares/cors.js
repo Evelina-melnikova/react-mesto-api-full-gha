@@ -1,6 +1,6 @@
 const allowedCors = [
-  'https://api.mesto.evelina.nomoredomainsmonster.ru',
   'https://mesto.evelina.nomoredomainsmonster.ru',
+  'http://mesto.evelina.nomoredomainsmonster.ru',
   'http://localhost:3000',
 ];
 module.exports = (req, res, next) => {

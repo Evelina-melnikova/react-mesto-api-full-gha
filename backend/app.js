@@ -7,6 +7,8 @@ const router = require('./routes/root');
 const { errors } = require('celebrate');
 const NotFoundError = require('./utils/notFoundError');
 const error = require('./utils/error');
+const { reqLogger, errLogger } = require('./middlewares/logger');
+const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -15,6 +17,10 @@ app.use(json());
 app.use(router);
 app.use(errors());
 app.use(error);
+app.use(reqLogger);
+app.use(errLogger);
+app.use(cors);
+
 app.use('*', () => {
   throw new NotFoundError('Такой страницы не существует');
 });

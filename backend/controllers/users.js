@@ -30,7 +30,7 @@ const getUserById = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e.name === 'NotFoundError') {
+    if (e instanceof NotFoundError) {
       next(NotFoundError('Пользователь по заданному ID не найден'));
       return;
     }

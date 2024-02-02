@@ -13,7 +13,6 @@ module.exports = function (req, res, next) {
       throw new AuthorizateError('С токеном что-то не так');
     }
     const validToken = token.replace('Bearer ', '');
-    // eslint-disable-next-line no-unused-vars
     payload = jwt.verify(validToken, NODE_ENV !== 'production' ? 'jwt_secret' : JWT_SECRET);
   } catch (error) {
     next(new AuthorizateError('С токеном что-то не так'));

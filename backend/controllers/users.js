@@ -118,12 +118,14 @@ const login = async (req, res, next) => {
     const token = generateToken({ _id: userAdmin._id });
     return res.status(HttpCodes.success).send(
       {
+        // eslint-disable-next-line max-len
         name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token,
       },
     );
   } catch (e) {
-    if (e instanceof AuthorizateError) {
+    if (e.message === 'AuthorizateError') {
       next(new AuthorizateError('Неверно введены данные'));
+      // eslint-disable-next-line consistent-return
       return;
     }
     next(e);

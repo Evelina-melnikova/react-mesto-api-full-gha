@@ -36,20 +36,20 @@ const signInJoi = {
 
 const userIdJoi = {
   params: Joi.object().keys({
-    userId: Joi.string().length(24).required().hex(),
+    userId: Joi.string().length(24).hex().required(),
   }),
 };
 
 const updateAvatarJoi = {
   body: Joi.object().keys({
-    avatar: Joi.string().required().pattern(regexUrl),
+    avatar: Joi.string().pattern(regexUrl),
   }),
 };
 
 const updateUserJoi = {
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).required(),
-    about: Joi.string().min(2).max(30).required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
   }),
 };
 

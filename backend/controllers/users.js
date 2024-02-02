@@ -140,7 +140,7 @@ const UsersMe = async (req, res, next) => {
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e instanceof NotValidIdError) {
+    if (e.message === 'User not found') {
       next(new NotValidIdError('Переданы невалидные данные'));
       return;
     }

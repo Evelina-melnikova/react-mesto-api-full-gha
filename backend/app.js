@@ -21,7 +21,7 @@ app.use(json());
 app.use(errors());
 app.use(error);
 
-app.use('*', () => {
+app.use('', () => {
   throw new NotFoundError('Такой страницы не существует');
 });
 

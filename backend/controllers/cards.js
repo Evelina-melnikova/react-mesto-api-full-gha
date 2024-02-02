@@ -27,7 +27,7 @@ const createCard = async (req, res, next) => {
     return res.status(HttpCodes.create).send(newCard);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      next(ValidationError('Переданы не валидные данные'));
+      next(new ValidationError('Переданы не валидные данные'));
       return;
     }
     next(e);
@@ -45,16 +45,16 @@ const deleteCard = async (req, res, next) => {
           return Card.findByIdAndDelete(cardId)
             .then((card) => res.status(HttpCodes.success).send(card));
         } else {
-          return next(DeleteError('У Вас нет прав на удаление данной карточки'));
+          return next(new DeleteError('У Вас нет прав на удаление данной карточки'));
         }
       });
   } catch (e) {
     if (e instanceof mongoose.Error.NotFoundError) {
-      next(NotFoundError('Карточка по заданному ID не найдена'));
+      next(new NotFoundError('Карточка по заданному ID не найдена'));
       return;
     }
     if (e instanceof mongoose.Error.CastError) {
-      next(ValidationError('Передан не валидный ID'));
+      next(new ValidationError('Передан не валидный ID'));
       return;
     }
     next(e);
@@ -73,11 +73,11 @@ const likeCard = async (req, res, next) => {
     return res.status(HttpCodes.success).send(like);
   } catch (e) {
     if (e.name === 'NotFoundError') {
-      next(NotFoundError('Карточка по заданному ID не найдена'));
+      next(new NotFoundError('Карточка по заданному ID не найдена'));
       return;
     }
     if (e instanceof mongoose.Error.CastError) {
-      next(ValidationError('Передан не валидный ID'));
+      next(new ValidationError('Передан не валидный ID'));
       return;
     }
     next(e);
@@ -96,11 +96,11 @@ const disLikeCard = async (req, res, next) => {
     return res.status(HttpCodes.success).send(like);
   } catch (e) {
     if (e instanceof NotFoundError) {
-      next(NotFoundError('Карточка по заданному ID не найдена'));
+      next(new NotFoundError('Карточка по заданному ID не найдена'));
       return;
     }
     if (e instanceof mongoose.Error.CastError) {
-      next(ValidationError('Передан не валидный ID'));
+      next(new ValidationError('Передан не валидный ID'));
       return;
     }
     next(e);

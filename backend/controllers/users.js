@@ -31,11 +31,11 @@ const getUserById = async (req, res, next) => {
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
     if (e instanceof NotFoundError) {
-      next(NotFoundError('Пользователь по заданному ID не найден'));
+      next(new NotFoundError('Пользователь по заданному ID не найден'));
       return;
     }
     if (e instanceof mongoose.Error.CastError) {
-      next(NotValidIdError('Передан не валидный ID'));
+      next(new NotValidIdError('Передан не валидный ID'));
       return;
     }
     next(e);
@@ -53,7 +53,7 @@ const createUser = async (req, res, next) => {
     });
   } catch (e) {
     if (e.code === HttpCodes.dublicate) {
-      next(ConflictError('Такой пользователь уже существует'));
+      next(new ConflictError('Такой пользователь уже существует'));
       return;
     }
     next(e);
@@ -71,11 +71,11 @@ const updateUser = async (req, res, next) => {
     return res.status(HttpCodes.success).send(updateUserProfile);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      next(NotValidIdError('Переданы не валидные данные'));
+      next(new NotValidIdError('Переданы не валидные данные'));
       return;
     }
     if (e instanceof NotFoundError) {
-      next(NotFoundError('Пользователь по заданному ID не найден'));
+      next(new NotFoundError('Пользователь по заданному ID не найден'));
       return;
     }
     next(e);
@@ -93,11 +93,11 @@ const updateUserAvatar = async (req, res, next) => {
     return res.status(HttpCodes.success).send(updateUserAvatr);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      next(NotValidIdError('Переданы не валидные данные'));
+      next(new NotValidIdError('Переданы не валидные данные'));
       return;
     }
     if (e instanceof NotFoundError) {
-      next(NotFoundError('Пользователь по заданному ID не найден'));
+      next(new NotFoundError('Пользователь по заданному ID не найден'));
       return;
     }
     next(e);
@@ -123,7 +123,7 @@ const login = async (req, res, next) => {
     );
   } catch (e) {
     if (e instanceof AuthorizateError) {
-      next(AuthorizateError('Неверно введены данные'));
+      next(new AuthorizateError('Неверно введены данные'));
       return;
     }
     next(e);
@@ -139,7 +139,7 @@ const UsersMe = async (req, res, next) => {
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
     if (e instanceof NotValidIdError) {
-      next(NotValidIdError('Переданы невалидные данные'));
+      next(new NotValidIdError('Переданы невалидные данные'));
       return;
     }
     next(e);

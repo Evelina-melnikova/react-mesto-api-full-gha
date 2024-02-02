@@ -37,7 +37,6 @@ const userSchema = new mongoose.Schema(
         },
       },
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-      minlength: [5, 'Минимальная длина 5 символа'],
     },
     email: {
       type: String,

@@ -108,11 +108,11 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const userAdmin = await User.findOne({ email }).select('+password').orFail(
-      () => AuthorizateError('Неверно введены данные'),
+      () => new Error('AuthorizateError'),
     );
     const matched = await bcrypt.compare(password, userAdmin.password);
     if (!matched) {
-      throw AuthorizateError('Неверно введены данные');
+      throw new Error('AuthorizateError');
     }
 
     const token = generateToken({ _id: userAdmin._id });

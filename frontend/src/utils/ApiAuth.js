@@ -1,117 +1,59 @@
-import apiConfig from './constants.js';
+export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
-class Api {
-    constructor({ url, headers }) {
-        this._url = url;
-        this._headers = headers;
-    }
-
-    _getRequest(options,url) {
-        return fetch(options, url)
-            .then((res) => {
-                if (!res.ok) {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-                return res.json();
-            });
-    }
-
-    getAllCards() {
-        const token = localStorage.getItem('token');
-        return this._getRequest(`${this._url}/cards`, {
-            method: "GET",
-            headers: {
-                authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
+function getReq(url, options) {
+  return fetch(url, options)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return res.json().then((errorData) => {
+          const errMessage = errorData.message || 'Request failed';
+          const errStatus = new Error(errMessage);
+          errStatus.status = res.status;
+          throw errStatus;
         });
-    };
-
-    createCard(data) {
-        const token = localStorage.getItem('token');
-        return this._getRequest(`${this._url}/cards`, {
-            method: "POST",
-            headers: {
-                authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: data.name,
-                link: data.link,
-            }),
-        });
-    }
-
-    deleteCard(data) {
-        const token = localStorage.getItem('token');
-        return this._getRequest(`${this._url}/cards/${data}`, {
-            method: "DELETE",
-            headers: {
-                authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-        });
-    }
-
-    getNewAvatar(item) {
-        const token = localStorage.getItem('token');
-        return this._getRequest(`${this._url}/users/me/avatar`, {
-            method: "PATCH",
-            headers: {
-                authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                avatar: item['avatar'],
-            })
-        })
-    }
-
-    setlikeApi(id, isLiked) {
-        const token = localStorage.getItem('token');
-        return isLiked
-            ? this._getRequest(`${this._url}/cards/${id}/likes`, {
-                method: "PUT",
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            })
-            : this._getRequest(`${this._url}/cards/${id}/likes`, {
-                method: "DELETE",
-                headers: {
-                    authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-            });
-    }
-
-    setUserInfo(data) {
-        const token = localStorage.getItem('token');
-        return this._getRequest(`${this._url}/users/me`, {
-            method: "PATCH",
-            headers: {
-                authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: data.name,
-                about: data.about,
-            }),
-        });
-    }
-
-    getUserInfo() {
-        const token = localStorage.getItem('token');
-        return this._getRequest(`${this._url}/users/me`, {
-            method: "GET",
-            headers: {
-                authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-        });
-    }
+      }
+    })
 }
-const api = new Api(apiConfig);
 
-export default api;
+
+export const register = (password, email) => {
+  return getReq(`${BASE_URL}/signup`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
+  })
+    .then(getReq)
+}
+
+export const authorize = (password, email) => {
+  return getReq(`${BASE_URL}/signin`, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
+  })
+    .then(getReq)
+}
+
+export const getContent = (token) => {
+  return getReq(`${BASE_URL}/users/me`, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+    .then(getReq)
+}

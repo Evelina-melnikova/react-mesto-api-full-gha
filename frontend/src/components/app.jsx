@@ -112,7 +112,7 @@ export default function App() {
       const res = await ApiAuth.getContent(jwt);
       if (res) {
         setIsLoggedIn(true);
-        setUserEmail(res.email);
+        setUserEmail(res.data.email);
         navigate('/');
       }
     } catch (err) {

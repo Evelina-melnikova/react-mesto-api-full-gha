@@ -38,13 +38,13 @@ export const authorize = (password, email) => {
   })
 };
 
-export const getContent = (token) => {
+export const getContent = () => {
   return getReq(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "Authorization": `Bearer ${token}`
+      // "Authorization": `Bearer ${token}`
     }
   })
 };

@@ -1,6 +1,6 @@
 export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
-function getReq(url, options) {
+export const getRequest= (url, options) => {
   return fetch(url, options)
       .then((res) => {
           if (res.ok) {
@@ -9,46 +9,38 @@ function getReq(url, options) {
 
           throw new Error('Что-то пошло не так')
       })
-}
+    }
 
 
 export const register = (password, email) => {
-  return getReq(`${BASE_URL}/signup`, {
+  return getRequest(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
+    body: JSON.stringify({password, email})
   })
-    .then(getReq)
-}
+};
 
 export const authorize = (password, email) => {
-  return getReq(`${BASE_URL}/signin`, {
+  return getRequest(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
-      "Content-Type": "application/json"
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
+    body: JSON.stringify({password, email})
   })
-    .then(getReq)
-}
+};
 
 export const getContent = (token) => {
-  return getReq(`${BASE_URL}/users/me`, {
+  return getRequest(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
     }
   })
-    .then(getReq)
-}
+};

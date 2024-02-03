@@ -107,9 +107,9 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  const auth = useCallback(async () => {
+  const auth = useCallback(async (jwt) => {
     try {
-      const res = await ApiAuth.getContent();
+      const res = await ApiAuth.getContent(jwt);
       if (res) {
         setIsLoggedIn(true);
         setUserEmail(res.email);
@@ -229,7 +229,7 @@ export default function App() {
     const jwt = getToken();
 
     if (jwt) {
-      auth();
+      auth(jwt);
     }
   }, [auth]);
 

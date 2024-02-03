@@ -2,18 +2,13 @@ export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
 function getReq(url, options) {
   return fetch(url, options)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return res.json().then((errorData) => {
-          const errMessage = errorData.message || 'Request failed';
-          const errStatus = new Error(errMessage);
-          errStatus.status = res.status;
-          throw errStatus;
-        });
-      }
-    })
+      .then((res) => {
+          if (res.ok) {
+              return res.json()
+          }
+
+          throw new Error('Что-то пошло не так')
+      })
 }
 
 
@@ -51,8 +46,8 @@ export const getContent = (token) => {
   return getReq(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
     }
   })
     .then(getReq)

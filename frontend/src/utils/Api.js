@@ -17,22 +17,22 @@ class Api {
     }
 
     getAllCards() {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/cards`, {
             method: "GET",
             headers: {
-                // authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
         });
     };
 
     createCard(data) {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/cards`, {
             method: "POST",
             headers: {
-                // authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -43,22 +43,22 @@ class Api {
     }
 
     deleteCard(data) {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/cards/${data}`, {
             method: "DELETE",
             headers: {
-                // authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
         });
     }
 
     getNewAvatar(item) {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/users/me/avatar`, {
             method: "PATCH",
             headers: {
-                // authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -68,19 +68,19 @@ class Api {
     }
 
     setlikeApi(id, isLiked) {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return isLiked
             ? this._getRequest(`${this._url}/cards/${id}/likes`, {
                 method: "PUT",
                 headers: {
-                    // authorization: `Bearer ${token}`,
+                    authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
             })
             : this._getRequest(`${this._url}/cards/${id}/likes`, {
                 method: "DELETE",
                 headers: {
-                    // authorization: `Bearer ${token}`,
+                    authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
             });
@@ -88,11 +88,11 @@ class Api {
 
 
     setUserInfo(data) {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/users/me`, {
             method: "PATCH",
             headers: {
-                // authorization: `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -103,11 +103,11 @@ class Api {
     }
 
     getUserInfo() {
-        // const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/users/me`, {
             method: "GET",
             headers: {
-                // "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
         });

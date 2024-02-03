@@ -40,10 +40,10 @@ export default function App() {
   const [error, setError] = useState({});
 
   const onSignOut = () => {
-    removeToken();
-    navigate('/login');
     setUserEmail('');
+    removeToken();
     setIsLoggedIn(false);
+    navigate('/login');
   };
 
   const onLogin = (password, email) => {
@@ -64,7 +64,7 @@ export default function App() {
       })
   }
 
-  const onRegister = (email, password) => {
+  const onRegister = (password, email) => {
     return ApiAuth.register(password, email).then((res) => {
       setIsSucsessed(true);
       setIsToolTipOpen(true);
@@ -112,7 +112,7 @@ export default function App() {
       const res = await ApiAuth.getContent();
       if (res) {
         setIsLoggedIn(true);
-        setUserEmail(res.data.email);
+        setUserEmail(res.email);
         navigate('/');
       }
     } catch (err) {

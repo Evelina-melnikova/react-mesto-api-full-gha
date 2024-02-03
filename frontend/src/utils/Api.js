@@ -6,14 +6,13 @@ class Api {
         this._headers = headers;
     }
 
-    _getRequest(options,url) {
-        return fetch(options, url)
-            .then((res) => {
-                if (!res.ok) {
-                    return Promise.reject(`Ошибка: ${res.status}`);
-                }
-                return res.json();
-            });
+    _getRequest(options, url) {
+        return fetch(options, url).then((res) => {
+            if (!res.ok) {
+                return Promise.reject(`Ошибка: ${res.status}`);
+            }
+            return res.json();
+        });
     }
 
     getAllCards() {

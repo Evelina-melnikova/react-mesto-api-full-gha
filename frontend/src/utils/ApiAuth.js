@@ -20,10 +20,13 @@ export const register = (password, email) => {
   return getReq(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
-      // 'Accept': 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({password, email})
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
   })
 };
 
@@ -31,10 +34,13 @@ export const authorize = (password, email) => {
   return getReq(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
-      // 'Accept': 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({password, email})
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
   })
 };
 

@@ -13,17 +13,19 @@ const cors = require('./middlewares/cors');
 const { PORT = 3000 } = process.env;
 const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb');
-app.use(json());
-app.use(router);
-app.use(errors());
-app.use(error);
 app.use(reqLogger);
-app.use(errLogger);
 app.use(cors);
+app.use(router);
+app.use(errLogger);
+
+app.use(json());
+app.use(errors());
 
 app.use('*', () => {
   throw new NotFoundError('Такой страницы не существует');
 });
+app.use(error);
+
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');

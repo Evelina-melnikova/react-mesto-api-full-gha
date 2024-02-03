@@ -29,7 +29,6 @@ export const register = (password, email) => {
       password: password
     })
   })
-    .then(getReq)
 }
 
 export const authorize = (password, email) => {
@@ -44,7 +43,6 @@ export const authorize = (password, email) => {
       password: password
     })
   })
-    .then(getReq)
 }
 
 export const getContent = (token) => {
@@ -55,5 +53,4 @@ export const getContent = (token) => {
       "Authorization": `Bearer ${token}`
     }
   })
-    .then(getReq)
 }

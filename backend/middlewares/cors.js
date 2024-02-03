@@ -3,6 +3,7 @@ const allowedCors = [
   'http://mesto.evelina.nomoredomainsmonster.ru',
   'http://localhost:3000',
 ];
+
 module.exports = (req, res, next) => {
   const { origin } = req.headers;
   if (allowedCors.includes(origin)) {

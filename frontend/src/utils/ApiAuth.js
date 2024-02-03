@@ -46,7 +46,7 @@ export const getContent = (token) => {
   return getReq(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
-      authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
       "Content-Type": "application/json"
     }
   })

@@ -6,11 +6,8 @@ function getReq(url, options) {
     if (response.ok) {
       return response.json();
     } else {
-      return response.json().then((errorData) => {
-        const errorMessage = errorData.message || 'Request failed';
-        const errorWithStatus = new Error(errorMessage);
-        errorWithStatus.status = response.status;
-        throw errorWithStatus;
+      return response.json().then((res) => {
+        Promise.reject(`Ошибка ${res.status}`)
       });
     }
   })

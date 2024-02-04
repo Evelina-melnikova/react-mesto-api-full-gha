@@ -4,9 +4,7 @@ function getReq(res) {
     if (res.ok) {
       return res.json();   
     }
-    return Promise.reject(`Ошибка ${res.status}`);
-    console.log(res);
-  }
+    console.log(res)  }
 
 export const register = (password, email) => {
   return getReq(`${BASE_URL}/signup`, {

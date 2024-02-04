@@ -19,6 +19,11 @@ app.use(json());
 app.use(reqLogger);
 app.use(cors);
 app.use(router);
+
+app.use('*', () => {
+  throw new NotFoundError('Такой страницы не существует');
+});
+
 app.use(errLogger);
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -28,10 +33,6 @@ app.get('/crash-test', () => {
 
 app.use(errors());
 app.use(error);
-
-app.use('*', () => {
-  throw new NotFoundError('Такой страницы не существует');
-});
 
 app.listen(PORT, () => {
   console.log(`Запущен порт: ${PORT}`);

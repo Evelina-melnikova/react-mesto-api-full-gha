@@ -1,15 +1,15 @@
 export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
-function getReq(response) {
-  return fetch(response)
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
+function getReq(res) {
+  return fetch(res)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
       } else {
-        return response.json().then((errorData) => {
+        return res.json().then((errorData) => {
           const errorMessage = errorData.message || 'Request failed';
           const errorWithStatus = new Error(errorMessage);
-          errorWithStatus.status = response.status;
+          errorWithStatus.status = res.status;
           throw errorWithStatus;
         });
       }
@@ -25,10 +25,7 @@ export const register = (email, password) => {
       'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
+    body: JSON.stringify({email,password})
   })
   .then(getReq)
 }
@@ -40,10 +37,7 @@ export const authorize = (email, password) => {
       'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      email: email,
-      password: password
-    })
+    body: JSON.stringify({email, password})
   })
   .then(getReq)
 }

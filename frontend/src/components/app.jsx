@@ -46,8 +46,8 @@ export default function App() {
     setIsLoggedIn(false);
   };
 
-  const onLogin = (password, email) => {
-    return ApiAuth.authorize(password, email)
+  const onLogin = (email,password) => {
+    return ApiAuth.authorize(email,password)
       .then((res) => {
         if (res.token) {
           setToken(res.token);

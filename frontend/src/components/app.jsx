@@ -65,17 +65,21 @@ export default function App() {
   }
 
   const onRegister = (email, password) => {
-    return ApiAuth.register(email, password).then((res) => {
-      setIsSucsessed(true);
-      setIsToolTipOpen(true);
-      navigate('/signin');
-      return res;
-    }).catch((err) => {
-      setIsSucsessed(false);
-      setIsToolTipOpen(true);
-      setError(err);
+    return ApiAuth.register(email, password)
+    .then((res) => {
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+        setIsSucsessed(true);
+        setIsToolTipOpen(true);
+        navigate('/signin');
+      }
     })
-  }
+    .catch((err) => {
+      setIsSucsessed(false);
+        setIsToolTipOpen(true);
+        setError(err);
+    });
+};
 
   function handleEditAvatarClick() {
     setEditAvatarPopup(true);
@@ -107,18 +111,18 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  const auth = useCallback( async () => {
-    try {
-      const res = await ApiAuth.getContent();
-      if (res) {
-        setIsLoggedIn(true);
-        setUserEmail(res.data.email);
-        navigate('/');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }, [setIsLoggedIn, setUserEmail, navigate]);
+  // const auth = useCallback( async () => {
+  //   try {
+  //     const res = await ApiAuth.getContent();
+  //     if (res) {
+  //       setIsLoggedIn(true);
+  //       setUserEmail(res.data.email);
+  //       navigate('/');
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);
@@ -229,13 +233,13 @@ export default function App() {
     navigateRef.current(initialRoute);
   }, []);
 
-  useEffect(() => {
-    const jwt = getToken();
+  // useEffect(() => {
+  //   const jwt = getToken();
 
-    if (jwt) {
-      auth(jwt);
-    }
-  }, [auth]);
+  //   if (jwt) {
+  //     auth(jwt);
+  //   }
+  // }, [auth]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("token");

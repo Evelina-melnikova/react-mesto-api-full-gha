@@ -36,7 +36,6 @@ export const register = (email, password) => {
 
 
 export const getContent = (token) => {
-  console.log(`Используемый токен: ${token}`);
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {

@@ -18,7 +18,7 @@ function getReq(response) {
 }
 
 
-export const register = (password, email) => {
+export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
@@ -26,8 +26,8 @@ export const register = (password, email) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      password: password,
-      email: email
+      email: email,
+      password: password
     })
   })
   .then(getReq)

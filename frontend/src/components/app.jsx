@@ -50,7 +50,6 @@ export default function App() {
     return ApiAuth.authorize(password, email)
       .then((res) => {
         if (res.token) {
-          localStorage.setItem("token", res.token);
           setToken(res.token);
           setIsLoggedIn(true);
           navigate('/');

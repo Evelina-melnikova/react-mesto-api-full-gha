@@ -229,7 +229,7 @@ export default function App() {
     const jwt = getToken();
 
     if (jwt) {
-      auth();
+      auth(jwt);
     }
   }, [auth]);
 

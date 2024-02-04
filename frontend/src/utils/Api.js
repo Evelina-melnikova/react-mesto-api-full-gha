@@ -20,7 +20,7 @@ class Api {
         return this._getRequest(`${this._url}/cards`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
         });
@@ -31,7 +31,7 @@ class Api {
         return this._getRequest(`${this._url}/cards`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -46,7 +46,7 @@ class Api {
         return this._getRequest(`${this._url}/cards/${data}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
         });
@@ -57,7 +57,7 @@ class Api {
         return this._getRequest(`${this._url}/users/me/avatar`, {
             method: "PATCH",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -72,14 +72,14 @@ class Api {
             ? this._getRequest(`${this._url}/cards/${id}/likes`, {
                 method: "PUT",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
             })
             : this._getRequest(`${this._url}/cards/${id}/likes`, {
                 method: "DELETE",
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    authorization: `Bearer ${token}`,
                     "Content-Type": "application/json"
                 },
             });
@@ -91,7 +91,7 @@ class Api {
         return this._getRequest(`${this._url}/users/me`, {
             method: "PATCH",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -106,7 +106,7 @@ class Api {
         return this._getRequest(`${this._url}/users/me`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
         });

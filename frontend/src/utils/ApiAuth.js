@@ -18,27 +18,28 @@ function getReq(res) {
 }
 
 export const authorize = (email, password) => {
+  const emailStr = typeof email === 'string' ? email : email.toString();
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({email: email, password: password})
+    body: JSON.stringify({email: emailStr, password: password})
   })
   .then(getReq)
 }
 
 
 export const register = (email, password) => {
-  console.log(email, typeof email)
+  const emailStr = typeof email === 'string' ? email : email.toString();
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({email: email, password: password})
+    body: JSON.stringify({email: emailStr, password: password})
   })
   .then(getReq)
 }

@@ -1,10 +1,19 @@
 export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
-function getReq(res) {
-  if (res.ok) {
-    return res.json();
-}
-return Promise.reject(`Ошибка ${res.status}`);
+function getReq(response) {
+  return fetch(response)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then((errorData) => {
+          const errorMessage = errorData.message || 'Request failed';
+          const errorWithStatus = new Error(errorMessage);
+          errorWithStatus.status = response.status;
+          throw errorWithStatus;
+        });
+      }
+    })
 }
 
 

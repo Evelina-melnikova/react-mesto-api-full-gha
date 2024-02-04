@@ -47,21 +47,19 @@ export default function App() {
   };
 
   const onLogin = (password, email) => {
-    return ApiAuth.authorize(password, email)
-      .then((data) => {
-        if (data.token) {
-          setToken(data.token);
+    return ApiAuth.authorize(email, password)
+      .then((res) => {
+        if (res.token) {
+          localStorage.setItem("token", res.token);
           setIsLoggedIn(true);
           navigate('/');
-          return data;
-        } else {
-          return;
         }
-      }).catch((err) => {
+      })
+      .catch((err) => {
         setIsSucsessed(false);
         setIsToolTipOpen(true);
         setError(err);
-      })
+      });
   }
 
   const onRegister = (password, email) => {

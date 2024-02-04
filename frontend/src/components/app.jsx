@@ -40,29 +40,31 @@ export default function App() {
   const [error, setError] = useState({});
 
   const onSignOut = () => {
-    setUserEmail('');
     removeToken();
-    setIsLoggedIn(false);
     navigate('/login');
+    setUserEmail('');
+    setIsLoggedIn(false);
   };
 
   const onLogin = (password, email) => {
-    return ApiAuth.authorize(email, password)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("token", res.token);
+    return ApiAuth.authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setToken(data.token);
           setIsLoggedIn(true);
           navigate('/');
+          return data;
+        } else {
+          return;
         }
-      })
-      .catch((err) => {
+      }).catch((err) => {
         setIsSucsessed(false);
         setIsToolTipOpen(true);
         setError(err);
-      });
+      })
   }
 
-  const onRegister = (password, email) => {
+  const onRegister = (email, password) => {
     return ApiAuth.register(password, email).then((res) => {
       setIsSucsessed(true);
       setIsToolTipOpen(true);
@@ -105,9 +107,9 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  const auth = useCallback(async (jwt) => {
+  const auth = useCallback(async () => {
     try {
-      const res = await ApiAuth.getContent(jwt);
+      const res = await ApiAuth.getContent();
       if (res) {
         setIsLoggedIn(true);
         setUserEmail(res.data.email);
@@ -227,7 +229,7 @@ export default function App() {
     const jwt = getToken();
 
     if (jwt) {
-      auth(jwt);
+      auth();
     }
   }, [auth]);
 

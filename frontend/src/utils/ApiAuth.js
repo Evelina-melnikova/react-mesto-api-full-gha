@@ -1,11 +1,21 @@
 export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 
-function getReq(res) {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-  }
+function getReq(url, options) {
+  return fetch(url, options)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return res.json().then((errorData) => {
+          const errMessage = errorData.message || 'Request failed';
+          const errStatus = new Error(errMessage);
+          errStatus.status = res.status;
+          throw errStatus;
+        });
+      }
+    })
+}
+
 
 export const register = (password, email) => {
   return getReq(`${BASE_URL}/signup`, {
@@ -15,13 +25,13 @@ export const register = (password, email) => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      password: password,
-      email: email
+      email: email,
+      password: password
     })
   })
 }
 
-export const authorize = (email, password) => {
+export const authorize = (password, email) => {
   return getReq(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {

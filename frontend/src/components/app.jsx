@@ -48,12 +48,12 @@ export default function App() {
 
   const onLogin = (password, email) => {
     return ApiAuth.authorize(password, email)
-      .then((data) => {
-        if (data.token) {
-          setToken(data.token);
+      .then((res) => {
+        if (res.token) {
+          setToken(res.token);
           setIsLoggedIn(true);
           navigate('/');
-          return data;
+          return res;
         } else {
           return;
         }
@@ -115,7 +115,6 @@ export default function App() {
     try {
       const res = await ApiAuth.getContent();
       if (res.token) {
-        localStorage.setItem("token", res.token);
         setIsLoggedIn(true);
         setUserEmail(res.data.email);
         navigate('/');

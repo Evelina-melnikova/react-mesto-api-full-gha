@@ -66,13 +66,10 @@ export default function App() {
 
   const onRegister = (email, password) => {
     return ApiAuth.register(email, password)
-    .then((res) => {
-      if (res.token) {
-        localStorage.setItem("token", res.token);
+    .then(() => {
         setIsSucsessed(true);
         setIsToolTipOpen(true);
         navigate('/signin');
-      }
     })
     .catch((err) => {
       setIsSucsessed(false);

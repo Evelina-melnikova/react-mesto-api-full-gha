@@ -8,7 +8,7 @@ const Register = ({ onRegister }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onRegister({ emailValue, passwordValue });
+    onRegister( emailValue, passwordValue );
   };
 
   const handleEmailChange = (e) => {

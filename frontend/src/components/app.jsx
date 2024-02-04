@@ -111,7 +111,7 @@ export default function App() {
   const auth = useCallback( async () => {
     try {
       const res = await ApiAuth.getContent();
-      if (res.token) {
+      if (res) {
         setIsLoggedIn(true);
         setUserEmail(res.data.email);
         navigate('/');

@@ -113,7 +113,7 @@ export default function App() {
 
   const auth = useCallback( async () => {
     try {
-      const res = await ApiAuth.getContent();
+      const res = await ApiAuth.getContent("token");
       if (res.token) {
         localStorage.setItem("token", res.token);
         setIsLoggedIn(true);
@@ -247,6 +247,7 @@ export default function App() {
     if (jwt) {
       ApiAuth.getContent(jwt)
         .then((res) => {
+          localStorage.setItem("token", res.token);
           navigate("/");
           setUserEmail(res.email);
           setIsLoggedIn(true);

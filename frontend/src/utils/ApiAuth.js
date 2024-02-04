@@ -14,11 +14,12 @@ function getReq(response) {
         });
       }
     })
+    
 }
 
 
 export const register = (password, email) => {
-  return getReq(`${BASE_URL}/signup`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -29,10 +30,11 @@ export const register = (password, email) => {
       email: email
     })
   })
+  .then(getReq)
 }
 
 export const authorize = (email, password) => {
-  return getReq(`${BASE_URL}/signin`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -43,14 +45,16 @@ export const authorize = (email, password) => {
       password: password
     })
   })
+  .then(getReq)
 }
 
 export const getContent = (token) => {
-  return getReq(`${BASE_URL}/users/me`, {
+  return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
       'Authorization': `Bearer ${token}`
     }
   })
+  .then(getReq)
 }

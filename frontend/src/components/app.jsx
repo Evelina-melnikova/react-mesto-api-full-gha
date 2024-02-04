@@ -244,7 +244,6 @@ export default function App() {
     if (jwt) {
       ApiAuth.getContent(jwt)
         .then((res) => {
-          localStorage.setItem("token", res.token);
           navigate("/");
           setUserEmail(res.email);
           setIsLoggedIn(true);

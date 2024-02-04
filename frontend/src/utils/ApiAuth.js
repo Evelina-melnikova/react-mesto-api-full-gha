@@ -18,7 +18,8 @@ function getReq(res) {
 }
 
 export const authorize = (email, password) => {
-  const emailStr = typeof email === 'string' ? email : email.toString();
+  const emailStr = typeof email === 'object' && email.value ? email.value : email;
+  console.log(email, emailStr)
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
@@ -32,7 +33,7 @@ export const authorize = (email, password) => {
 
 
 export const register = (email, password) => {
-  const emailStr = typeof email === 'string' ? email : email.toString();
+  const emailStr = typeof email === 'object' && email.value ? email.value : email;
   console.log(email)
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',

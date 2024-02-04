@@ -9,7 +9,7 @@ function getReq(res) {
   }
 
 export const register = (password, email) => {
-  return fetch(`${BASE_URL}/signup`, {
+  return getReq(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -20,11 +20,10 @@ export const register = (password, email) => {
       email: email
     })
   })
-  .then(getReq)
 }
 
 export const authorize = (email, password) => {
-  return fetch(`${BASE_URL}/signin`, {
+  return getReq(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -35,7 +34,6 @@ export const authorize = (email, password) => {
       password: password
     })
   })
-  .then(getReq)
 }
 
 export const getContent = (token) => {

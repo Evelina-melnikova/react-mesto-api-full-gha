@@ -111,18 +111,19 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  // const auth = useCallback( async () => {
-  //   try {
-  //     const res = await ApiAuth.getContent();
-  //     if (res) {
-  //       setIsLoggedIn(true);
-  //       setUserEmail(res.data.email);
-  //       navigate('/');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [setIsLoggedIn, setUserEmail, navigate]);
+  const auth = useCallback( async () => {
+    try {
+      const res = await ApiAuth.getContent();
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+        setIsLoggedIn(true);
+        setUserEmail(res.data.email);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);

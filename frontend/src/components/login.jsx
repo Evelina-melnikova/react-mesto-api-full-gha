@@ -7,7 +7,9 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(passwordValue, emailValue);
+    if (emailValue && passwordValue) {
+      onLogin({ emailValue, passwordValue });
+    }
   }
 
   const handleEmailChange = (e) => {
@@ -22,7 +24,7 @@ const Login = ({ onLogin }) => {
     <div className='login'>
       <h1 className='login__title'>Вход</h1>
       <form className='login__form'
-       onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}>
         <div className="login__container login__container_input">
           <input
             name="email"
@@ -36,20 +38,20 @@ const Login = ({ onLogin }) => {
           <span
             className="login-error"
           />
-        <div className="login__container login__container_input">
-          <input
-            name="password"
-            type="password"
-            placeholder="Пароль"
-            className="login__input login__input_type_password"
-            required=""
-            value={passwordValue ?? ''}
-            onChange={handlePasswordChange}
-          />
-          <span
-            className="login-error"
-          />
-        </div>
+          <div className="login__container login__container_input">
+            <input
+              name="password"
+              type="password"
+              placeholder="Пароль"
+              className="login__input login__input_type_password"
+              required=""
+              value={passwordValue ?? ''}
+              onChange={handlePasswordChange}
+            />
+            <span
+              className="login-error"
+            />
+          </div>
         </div>
         <div className='login__container login__container_type-button'>
           <button

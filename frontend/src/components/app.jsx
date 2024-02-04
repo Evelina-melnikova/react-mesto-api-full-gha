@@ -46,8 +46,8 @@ export default function App() {
     setIsLoggedIn(false);
   };
 
-  const onLogin = (data) => {
-    return ApiAuth.authorize(data)
+  const onLogin = (email,password) => {
+    return ApiAuth.authorize(email,password)
       .then((res) => {
         if (res.token) {
           setToken(res.token);
@@ -64,8 +64,8 @@ export default function App() {
       })
   }
 
-  const onRegister = (data) => {
-    return ApiAuth.register(data)
+  const onRegister = (email, password) => {
+    return ApiAuth.register(email, password)
     .then(() => {
         setIsSucsessed(true);
         setIsToolTipOpen(true);

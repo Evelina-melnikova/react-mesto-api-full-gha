@@ -106,13 +106,8 @@ export default function App() {
     setDeletePopup(false);
     setIsToolTipOpen(false);
   }
-  useEffect(() => {
-    const initialRoute = '/';
-    navigateRef.current(initialRoute);
-  }, []);
 
-  
-  const auth = useCallback(async () => {
+  const auth = useCallback( async () => {
     try {
       const res = await ApiAuth.getContent();
       if (res) {
@@ -121,7 +116,7 @@ export default function App() {
         navigate('/');
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }, [setIsLoggedIn, setUserEmail, navigate]);
 
@@ -229,6 +224,10 @@ export default function App() {
     }
   }, [isloggedIn]);
 
+  useEffect(() => {
+    const initialRoute = '/';
+    navigateRef.current(initialRoute);
+  }, []);
 
   useEffect(() => {
     const jwt = getToken();

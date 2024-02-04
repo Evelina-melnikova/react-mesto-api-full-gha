@@ -33,7 +33,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
-  // const navigateRef = useRef(navigate);
+  const navigateRef = useRef(navigate);
   const [isToolTipOpen, setIsToolTipOpen] = useState(false);
   const [isSucsessed, setIsSucsessed] = useState(false);
   const [isloggedIn, setIsLoggedIn] = useState(false);
@@ -65,7 +65,7 @@ export default function App() {
   }
 
   const onRegister = (email, password) => {
-    return ApiAuth.register(password, email).then((res) => {
+    return ApiAuth.register(email, password).then((res) => {
       setIsSucsessed(true);
       setIsToolTipOpen(true);
       navigate('/signin');
@@ -106,7 +106,12 @@ export default function App() {
     setDeletePopup(false);
     setIsToolTipOpen(false);
   }
+  useEffect(() => {
+    const initialRoute = '/';
+    navigateRef.current(initialRoute);
+  }, []);
 
+  
   const auth = useCallback(async () => {
     try {
       const res = await ApiAuth.getContent();

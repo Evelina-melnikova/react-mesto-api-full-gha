@@ -7,9 +7,7 @@ const Login = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (emailValue && passwordValue) {
       onLogin({ emailValue, passwordValue });
-    }
   }
 
   const handleEmailChange = (e) => {

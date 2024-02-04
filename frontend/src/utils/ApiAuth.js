@@ -33,6 +33,7 @@ export const authorize = (email, password) => {
 
 export const register = (email, password) => {
   const emailStr = typeof email === 'string' ? email : email.toString();
+  console.log(email)
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {

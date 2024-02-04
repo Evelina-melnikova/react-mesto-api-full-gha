@@ -33,7 +33,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [userEmail, setUserEmail] = useState('');
   const navigate = useNavigate();
-  // const navigateRef = useRef(navigate);
+  const navigateRef = useRef(navigate);
   const [isToolTipOpen, setIsToolTipOpen] = useState(false);
   const [isSucsessed, setIsSucsessed] = useState(false);
   const [isloggedIn, setIsLoggedIn] = useState(false);
@@ -46,8 +46,8 @@ export default function App() {
     setIsLoggedIn(false);
   };
 
-  const onLogin = (email,password) => {
-    return ApiAuth.authorize(email,password)
+  const onLogin = (email, password) => {
+    return ApiAuth.authorize(email, password)
       .then((res) => {
         if (res.token) {
           setToken(res.token);
@@ -66,17 +66,17 @@ export default function App() {
 
   const onRegister = (email, password) => {
     return ApiAuth.register(email, password)
-    .then(() => {
+      .then(() => {
         setIsSucsessed(true);
         setIsToolTipOpen(true);
         navigate('/signin');
-    })
-    .catch((err) => {
-      setIsSucsessed(false);
+      })
+      .catch((err) => {
+        setIsSucsessed(false);
         setIsToolTipOpen(true);
         setError(err);
-    });
-};
+      });
+  };
 
   function handleEditAvatarClick() {
     setEditAvatarPopup(true);
@@ -108,18 +108,18 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  // const auth = useCallback( async () => {
-  //   try {
-  //     const res = await ApiAuth.getContent();
-  //     if (res) {
-  //       setIsLoggedIn(true);
-  //       setUserEmail(res.data.email);
-  //       navigate('/');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [setIsLoggedIn, setUserEmail, navigate]);
+  const auth = useCallback( async () => {
+    try {
+      const res = await ApiAuth.getContent();
+      if (res) {
+        setIsLoggedIn(true);
+        setUserEmail(res.data.email);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);
@@ -206,42 +206,42 @@ export default function App() {
       });
   }
 
-  // useEffect(() => {
-  //   if (isloggedIn) {
-  //     api.getUserInfo()
-  //       .then((data) => {
-  //         setCurrentUser(data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //     api.getAllCards()
-  //       .then(data => {
-  //         setCards(data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }, [isloggedIn]);
+  useEffect(() => {
+    if (isloggedIn) {
+      api.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api.getAllCards()
+        .then(data => {
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isloggedIn]);
 
-  // useEffect(() => {
-  //   const initialRoute = '/';
-  //   navigateRef.current(initialRoute);
-  // }, []);
+  useEffect(() => {
+    const initialRoute = '/';
+    navigateRef.current(initialRoute);
+  }, []);
 
-  // useEffect(() => {
-  //   const jwt = getToken();
+  useEffect(() => {
+    const jwt = getToken();
 
-  //   if (jwt) {
-  //     auth(jwt);
-  //   }
-  // }, [auth]);
+    if (jwt) {
+      auth(jwt);
+    }
+  }, [auth]);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      ApiAuth.getContent(token)
+    const jwt = localStorage.getItem("token");
+    if (jwt) {
+      ApiAuth.getContent(jwt)
         .then((res) => {
           navigate("/");
           setUserEmail(res.email);
@@ -309,9 +309,7 @@ export default function App() {
                 isloggedIn={isloggedIn}
               />} />
 
-          </Routes>
-          {isloggedIn && <Footer />}
-
+          </Routes>{isloggedIn && <Footer />}
         </div>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}

@@ -6,14 +6,14 @@ class Api {
         this._headers = headers;
     }
 
-    _getRequest(options, url) {
-        return fetch(options, url).then((res) => {
+    _getRequest(url, options) {
+        return fetch(url, options).then((res) => {
             if (!res.ok) {
-              return Promise.reject(`Ошибка: ${res.status}`);
+                return Promise.reject(`Ошибка: ${res.status}`);
             }
             return res.json();
-          });
-        }
+        });
+    }
 
     getAllCards() {
         const token = localStorage.getItem('token');
@@ -24,8 +24,7 @@ class Api {
                 "Content-Type": "application/json"
             },
         });
-    };
-
+    }
     createCard(data) {
         const token = localStorage.getItem('token');
         return this._getRequest(`${this._url}/cards`, {
@@ -62,8 +61,8 @@ class Api {
             },
             body: JSON.stringify({
                 avatar: item['avatar'],
-            })
-        })
+            }),
+        });
     }
 
     setlikeApi(id, isLiked) {

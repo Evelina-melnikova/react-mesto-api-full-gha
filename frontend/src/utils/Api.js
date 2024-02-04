@@ -7,13 +7,14 @@ class Api {
     }
 
     _getRequest(options, url) {
-        return fetch(options, url).then((res) => {
-            if (!res.ok) {
-              return Promise.reject(`Ошибка: ${res.status}`);
-            }
-            return res.json();
-          });
-        }
+        return fetch(options, url)
+            .then((res) => {
+                if (!res.ok) {
+                    return Promise.reject(`Ошибка: ${res.status}`);
+                }
+                return res.json();
+            });
+    }
 
     getAllCards() {
         const token = localStorage.getItem('token');

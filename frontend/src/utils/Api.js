@@ -54,7 +54,7 @@ class Api {
     }
 
     getNewAvatar(item) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('item');
         return this._getRequest(`${this._url}/users/me/avatar`, {
             method: "PATCH",
             headers: {

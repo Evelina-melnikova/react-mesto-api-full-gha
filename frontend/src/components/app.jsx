@@ -238,38 +238,38 @@ export default function App() {
   //   }
   // }, [auth]);
 
-  // React.useEffect(() => {
-  //   const jwt = localStorage.getItem("token");
-  //   if (jwt) {
-  //     ApiAuth.getContent(jwt)
-  //       .then((res) => {
-  //         navigate("/");
-  //         setUserEmail(res.email);
-  //         setIsLoggedIn(true);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //     api
-  //       .getUserInfoApi()
-  //       .then((data) => {
-  //         setCurrentUser(data);
-  //         setIsLoggedIn(true)
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //     api
-  //       .getAllCards()
-  //       .then((data) => {
-  //         setCards(data);
-  //         setIsLoggedIn(true)
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // }, [isloggedIn, navigate]);
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      ApiAuth.getContent(token)
+        .then((res) => {
+          navigate("/");
+          setUserEmail(res.email);
+          setIsLoggedIn(true);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      api
+        .getUserInfoApi()
+        .then((data) => {
+          setCurrentUser(data);
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      api
+        .getAllCards()
+        .then((data) => {
+          setCards(data);
+          setIsLoggedIn(true)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [isloggedIn, navigate]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

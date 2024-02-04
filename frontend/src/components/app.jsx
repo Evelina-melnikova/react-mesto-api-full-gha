@@ -108,18 +108,18 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  const auth = useCallback( async () => {
-    try {
-      const res = await ApiAuth.getContent();
-      if (res) {
-        setIsLoggedIn(true);
-        setUserEmail(res.data.email);
-        navigate('/');
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }, [setIsLoggedIn, setUserEmail, navigate]);
+  // const auth = useCallback( async () => {
+  //   try {
+  //     const res = await ApiAuth.getContent();
+  //     if (res) {
+  //       setIsLoggedIn(true);
+  //       setUserEmail(res.data.email);
+  //       navigate('/');
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);
@@ -206,24 +206,24 @@ export default function App() {
       });
   }
 
-  useEffect(() => {
-    if (isloggedIn) {
-      api.getUserInfo()
-        .then((data) => {
-          setCurrentUser(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      api.getAllCards()
-        .then(data => {
-          setCards(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [isloggedIn]);
+  // useEffect(() => {
+  //   if (isloggedIn) {
+  //     api.getUserInfo()
+  //       .then((data) => {
+  //         setCurrentUser(data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //     api.getAllCards()
+  //       .then(data => {
+  //         setCards(data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [isloggedIn]);
 
   // useEffect(() => {
   //   const initialRoute = '/';

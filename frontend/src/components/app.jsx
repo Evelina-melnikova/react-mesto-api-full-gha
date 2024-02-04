@@ -46,14 +46,14 @@ export default function App() {
     setIsLoggedIn(false);
   };
 
-  const onLogin = (email,password) => {
-    return ApiAuth.authorize(email,password)
-      .then((res) => {
-        if (res.token) {
-          setToken(res.token);
+  const onLogin = (password, email) => {
+    return ApiAuth.authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setToken(data.token);
           setIsLoggedIn(true);
           navigate('/');
-          return res;
+          return data;
         } else {
           return;
         }
@@ -65,18 +65,17 @@ export default function App() {
   }
 
   const onRegister = (email, password) => {
-    return ApiAuth.register(email, password)
-    .then(() => {
-        setIsSucsessed(true);
-        setIsToolTipOpen(true);
-        navigate('/signin');
-    })
-    .catch((err) => {
+    return ApiAuth.register(password, email).then((res) => {
+      setIsSucsessed(true);
+      setIsToolTipOpen(true);
+      navigate('/signin');
+      return res;
+    }).catch((err) => {
       setIsSucsessed(false);
-        setIsToolTipOpen(true);
-        setError(err);
-    });
-};
+      setIsToolTipOpen(true);
+      setError(err);
+    })
+  }
 
   function handleEditAvatarClick() {
     setEditAvatarPopup(true);
@@ -108,18 +107,18 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  // const auth = useCallback( async () => {
-  //   try {
-  //     const res = await ApiAuth.getContent();
-  //     if (res) {
-  //       setIsLoggedIn(true);
-  //       setUserEmail(res.data.email);
-  //       navigate('/');
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [setIsLoggedIn, setUserEmail, navigate]);
+  const auth = useCallback(async () => {
+    try {
+      const res = await ApiAuth.getContent();
+      if (res) {
+        setIsLoggedIn(true);
+        setUserEmail(res.data.email);
+        navigate('/');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setIsLoggedIn, setUserEmail, navigate]);
 
   function showLoader() {
     setIsLoading(true);
@@ -206,42 +205,38 @@ export default function App() {
       });
   }
 
-  // useEffect(() => {
-  //   if (isloggedIn) {
-  //     api.getUserInfo()
-  //       .then((data) => {
-  //         setCurrentUser(data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //     api.getAllCards()
-  //       .then(data => {
-  //         setCards(data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }, [isloggedIn]);
+  useEffect(() => {
+    if (isloggedIn) {
+      api.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api.getAllCards()
+        .then(data => {
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isloggedIn]);
 
-  // useEffect(() => {
-  //   const initialRoute = '/';
-  //   navigateRef.current(initialRoute);
-  // }, []);
 
-  // useEffect(() => {
-  //   const jwt = getToken();
+  useEffect(() => {
+    const jwt = getToken();
 
-  //   if (jwt) {
-  //     auth(jwt);
-  //   }
-  // }, [auth]);
+    if (jwt) {
+      auth();
+    }
+  }, [auth]);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      ApiAuth.getContent(token)
+    const jwt = localStorage.getItem("token");
+    if (jwt) {
+      ApiAuth.getContent(jwt)
         .then((res) => {
           navigate("/");
           setUserEmail(res.email);

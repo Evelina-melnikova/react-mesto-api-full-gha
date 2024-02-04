@@ -3,9 +3,8 @@ export const BASE_URL = 'https://api.mesto.evelina.nomoredomainsmonster.ru';
 function getReq(res) {
     if (res.ok) {
       return res.json();   
-       console.log(res);
     }
-    return Promise.reject(`Ошибка ${res.status}`);
+    return Promise.reject(`Ошибка ${console.log(res)}`);
   }
 
 export const register = (password, email) => {

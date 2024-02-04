@@ -234,13 +234,13 @@ export default function App() {
     navigateRef.current(initialRoute);
   }, []);
 
-  // useEffect(() => {
-  //   const jwt = getToken();
+  useEffect(() => {
+    const jwt = getToken();
 
-  //   if (jwt) {
-  //     auth(jwt);
-  //   }
-  // }, [auth]);
+    if (jwt) {
+      auth(jwt);
+    }
+  }, [auth]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("token");

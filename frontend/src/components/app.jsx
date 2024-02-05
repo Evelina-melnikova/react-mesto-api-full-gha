@@ -49,8 +49,8 @@ export default function App() {
   const onLogin = (email, password) => {
     return ApiAuth.authorize(email, password)
       .then((res) => {
-        if (res.jwt) {
-          setToken(res.jwt);
+        if (res.token) {
+          setToken(res.token);
           setIsLoggedIn(true);
           navigate('/');
           return res;
@@ -233,18 +233,17 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const jwt = getToken();
+    const token = getToken();
 
-    if (jwt) {
-      auth(jwt);
+    if (token) {
+      auth(token);
     }
   }, [auth]);
 
   React.useEffect(() => {
-    const jwt = getToken(); // Используем функцию getToken для извлечения токена
-  
-    if (jwt) {
-      ApiAuth.getContent(jwt)
+    const token = getToken();
+    if (token) {
+      ApiAuth.getContent(token)
         .then((res) => {
           navigate("/");
           setUserEmail(res.email);
@@ -272,7 +271,7 @@ export default function App() {
           console.log(error);
         });
     }
-  }, [navigate]);
+  }, [isloggedIn, navigate]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

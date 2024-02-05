@@ -31,26 +31,14 @@ const getUserById = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    next(e);
+    if (e instanceof NotFoundError) {
+      next(e);
+    } else {
+      next(e);
+    }
   }
 };
 
-// const createUser = async (req, res, next) => {
-//   try {
-//     const { email, password } = req.body;
-
-//     const saltRounds = 10;
-//     const hash = await bcrypt.hash(password, saltRounds);
-//     const newUser = await User.create({ email, password: hash });
-//     return res.status(HttpCodes.create).send({
-//       name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email, id: newUser._id,
-//     });
-//   } catch (e) {
-//     next(new ConflictError('Такой пользователь уже существует'));
-//   } else {
-//     next(e); // Прямая передача ошибки в обработчик без создания новой
-//   }
-// }
 const createUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -61,8 +49,8 @@ const createUser = async (req, res, next) => {
       name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email, id: newUser._id,
     });
   } catch (e) {
-    if (e.code === HttpCodes.duplicate) {
-      next(new ConflictError('Такой пользователь уже существует'));
+    if (e instanceof ConflictError) {
+      next(e);
     } else {
       next(e);
     }
@@ -79,8 +67,8 @@ const updateUser = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(updateUserProfile);
   } catch (e) {
-    if (e.name === 'ValidationError') {
-      next(new NotValidIdError('Переданы невалидные данные'));
+    if (e instanceof NotValidIdError || e.name === 'ValidationError') {
+      next(e);
     } else {
       next(e);
     }
@@ -97,8 +85,8 @@ const updateUserAvatar = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(updateUserAvatr);
   } catch (e) {
-    if (e.name === 'ValidationError') {
-      next(new NotValidIdError('Переданы невалидные данные'));
+    if (e instanceof NotValidIdError || e.name === 'ValidationError') {
+      next(e);
     } else {
       next(e);
     }
@@ -109,20 +97,20 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const userAdmin = await User.findOne({ email }).select('+password').orFail(
-      () => new Error('AuthorizateError'),
+      () => new AuthorizateError('Неверно введены данные'),
     );
     const matched = await bcrypt.compare(password, userAdmin.password);
     if (!matched) {
-      throw new Error('AuthorizateError');
+      throw new AuthorizateError('Неверно введены данные');
     }
 
     const token = generateToken({ _id: userAdmin._id });
     return res.status(HttpCodes.success).send(
-      { name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token, },
+      { name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token },
     );
   } catch (e) {
-    if (e.message === 'AuthorizateError') {
-      next(new AuthorizateError('Неверно введены данные'));
+    if (e instanceof AuthorizateError) {
+      next(e);
     } else {
       next(e);
     }
@@ -133,15 +121,15 @@ const UsersMe = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
     if (!user) {
-      throw new NotValidIdError('User not found');
+      throw new NotFoundError('Пользователь не найден');
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e.message === 'User not found') {
-      next(new NotValidIdError('Переданы невалидные данные'));
-      return;
+    if (e instanceof NotFoundError || e instanceof NotValidIdError) {
+      next(e);
+    } else {
+      next(e);
     }
-    next(e);
   }
 };
 

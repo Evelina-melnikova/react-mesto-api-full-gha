@@ -7,7 +7,7 @@ const HttpCodes = {
   notFoundError: 404,
   conflict: 409,
   serverError: 500,
-  dublicate: 11000,
+  duplicate: 11000,
 };
 
 module.exports = HttpCodes;

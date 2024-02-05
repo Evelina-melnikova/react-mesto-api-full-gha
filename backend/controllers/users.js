@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable object-property-newline */
 /* eslint-disable max-len */
 /* eslint-disable consistent-return */
 // eslint-disable-next-line import/no-extraneous-dependencies, import/order, import/no-unresolved
@@ -29,34 +31,41 @@ const getUserById = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e.name === 'NotFoundError') {
-      next(new NotFoundError('Пользователь по заданному ID не найден'));
-      return;
-    }
-    if (e.name === 'CastError') {
-      next(new NotValidIdError('Передан не валидный ID'));
-      return;
-    }
     next(e);
   }
 };
 
+// const createUser = async (req, res, next) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const saltRounds = 10;
+//     const hash = await bcrypt.hash(password, saltRounds);
+//     const newUser = await User.create({ email, password: hash });
+//     return res.status(HttpCodes.create).send({
+//       name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email, id: newUser._id,
+//     });
+//   } catch (e) {
+//     next(new ConflictError('Такой пользователь уже существует'));
+//   } else {
+//     next(e); // Прямая передача ошибки в обработчик без создания новой
+//   }
+// }
 const createUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    const soltRounds = 10;
-    const hash = await bcrypt.hash(password, soltRounds);
+    const saltRounds = 10;
+    const hash = await bcrypt.hash(password, saltRounds);
     const newUser = await User.create({ email, password: hash });
     return res.status(HttpCodes.create).send({
       name: newUser.name, about: newUser.about, avatar: newUser.avatar, email: newUser.email, id: newUser._id,
     });
   } catch (e) {
-    if (e.code === HttpCodes.dublicate) {
+    if (e.code === HttpCodes.duplicate) {
       next(new ConflictError('Такой пользователь уже существует'));
-      return;
+    } else {
+      next(e);
     }
-    next(e);
   }
 };
 
@@ -71,14 +80,10 @@ const updateUser = async (req, res, next) => {
     return res.status(HttpCodes.success).send(updateUserProfile);
   } catch (e) {
     if (e.name === 'ValidationError') {
-      next(new NotValidIdError('Переданы не валидные данные'));
-      return;
+      next(new NotValidIdError('Переданы невалидные данные'));
+    } else {
+      next(e);
     }
-    if (e.name === 'NotFoundError') {
-      next(new NotFoundError('Пользователь по заданному ID не найден'));
-      return;
-    }
-    next(e);
   }
 };
 
@@ -93,14 +98,10 @@ const updateUserAvatar = async (req, res, next) => {
     return res.status(HttpCodes.success).send(updateUserAvatr);
   } catch (e) {
     if (e.name === 'ValidationError') {
-      next(new NotValidIdError('Переданы не валидные данные'));
-      return;
+      next(new NotValidIdError('Переданы невалидные данные'));
+    } else {
+      next(e);
     }
-    if (e.name === 'NotFoundError') {
-      next(new NotFoundError('Пользователь по заданному ID не найден'));
-      return;
-    }
-    next(e);
   }
 };
 
@@ -117,21 +118,14 @@ const login = async (req, res, next) => {
 
     const token = generateToken({ _id: userAdmin._id });
     return res.status(HttpCodes.success).send(
-      {
-        name: userAdmin.name,
-        about: userAdmin.about,
-        avatar: userAdmin.avatar,
-        email: userAdmin.email,
-        id: userAdmin._id,
-        token,
-      },
+      { name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token, },
     );
   } catch (e) {
     if (e.message === 'AuthorizateError') {
       next(new AuthorizateError('Неверно введены данные'));
-      return;
+    } else {
+      next(e);
     }
-    next(e);
   }
 };
 

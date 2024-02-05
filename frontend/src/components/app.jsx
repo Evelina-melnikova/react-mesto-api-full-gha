@@ -49,8 +49,8 @@ export default function App() {
   const onLogin = (email, password) => {
     return ApiAuth.authorize(email, password)
       .then((res) => {
-        if (res.jwt) {
-          setToken(res.jwt);
+        if (res.token) {
+          setToken(res.token);
           setIsLoggedIn(true);
           navigate('/');
           return res;

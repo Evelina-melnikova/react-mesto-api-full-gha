@@ -66,11 +66,13 @@ export default function App() {
 
   const onRegister = (email, password) => {
     return ApiAuth.register(email, password)
-      .then(() => {
-        setIsSucsessed(true);
-        setIsToolTipOpen(true);
-        navigate('/signin');
-      })
+    .then((res) => {
+      if (res.jwt) {
+          setToken(res.jwt); // Сохраняем токен после успешной регистрации
+          setIsLoggedIn(true);
+          navigate('/');
+      }
+  })
       .catch((err) => {
         setIsSucsessed(false);
         setIsToolTipOpen(true);
@@ -239,7 +241,8 @@ export default function App() {
   }, [auth]);
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem("token");
+    const jwt = getToken(); // Используем функцию getToken для извлечения токена
+  
     if (jwt) {
       ApiAuth.getContent(jwt)
         .then((res) => {
@@ -269,7 +272,7 @@ export default function App() {
           console.log(error);
         });
     }
-  }, [isloggedIn, navigate]);
+  }, [navigate]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

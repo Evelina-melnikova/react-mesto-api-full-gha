@@ -98,6 +98,13 @@ export default function App() {
     setDeletePopup(true);
   }
 
+  function showLoader() {
+    setIsLoading(true);
+  }
+
+  function removeLoader() {
+    setIsLoading(false);
+  }
 
   const closeAllPopups = () => {
     setEditAvatarPopup(false);
@@ -121,14 +128,6 @@ export default function App() {
       console.log(err);
     }
   }, [setIsLoggedIn, setUserEmail, navigate]);
-
-  function showLoader() {
-    setIsLoading(true);
-  }
-
-  function removeLoader() {
-    setIsLoading(false);
-  }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -206,24 +205,24 @@ export default function App() {
       });
   }
 
-  // useEffect(() => {
-  //   if (isloggedIn) {
-  //     api.getUserInfo()
-  //       .then((data) => {
-  //         setCurrentUser(data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //     api.getAllCards()
-  //       .then(data => {
-  //         setCards(data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   }
-  // }, [isloggedIn]);
+  useEffect(() => {
+    if (isloggedIn) {
+      api.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      api.getAllCards()
+        .then(data => {
+          setCards(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [isloggedIn]);
 
   // useEffect(() => {
   //   const initialRoute = '/';

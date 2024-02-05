@@ -2,20 +2,21 @@ const jwt = require('jsonwebtoken');
 const AuthorizateError = require('../utils/authorizateError');
 require('dotenv').config();
 
-const { JWT_SECRET, NODE_ENV } = process.env;
+const { JWT_SECRET } = process.env;
 
 // eslint-disable-next-line func-names, consistent-return
 module.exports = function (req, res, next) {
   let payload;
   try {
     const token = req.headers.authorization;
-    if (!token) {
-      throw new AuthorizateError('С токеном что-то не так');
+    if (!token.startsWith('Bearer ')) {
+      throw new AuthorizateError('Необходима авторизация');
     }
     const validToken = token.replace('Bearer ', '');
-    payload = jwt.verify(validToken, NODE_ENV !== 'production' ? 'jwt_secret' : JWT_SECRET);
+    const secret = JWT_SECRET || 'default_secret';
+    payload = jwt.verify(validToken, secret);
   } catch (error) {
-    next(new AuthorizateError('С токеном что-то не так'));
+    return next(new AuthorizateError('Неверный или истекший токен'));
   }
   req.user = payload;
   next();

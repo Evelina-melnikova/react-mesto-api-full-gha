@@ -69,7 +69,7 @@ export default function App() {
       .then(() => {
         setIsSucsessed(true);
         setIsToolTipOpen(true);
-        // navigate('/signin');
+        navigate('/sign-in');
       })
       .catch((err) => {
         setIsSucsessed(false);

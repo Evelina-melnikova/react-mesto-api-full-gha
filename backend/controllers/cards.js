@@ -25,7 +25,7 @@ const createCard = async (req, res, next) => {
     const newCard = await Card.create({ name, link, owner });
     return res.status(HttpCodes.create).send(newCard);
   } catch (e) {
-    if (e.name === 'ValidationError') {
+    if (e instanceof ValidationError) {
       next(new ValidationError('Переданы не валидные данные'));
       return;
     }
@@ -48,12 +48,12 @@ const deleteCard = async (req, res, next) => {
         }
       });
   } catch (e) {
-    if (e.name === 'NotFoundError') {
-      next(new NotFoundError('Карточка по заданному ID не найдена'));
+    if (e instanceof NotFoundError) {
+      next(e);
       return;
     }
-    if (e.name === 'CastError') {
-      next(new ValidationError('Передан не валидный ID'));
+    if (e instanceof ValidationError || e.name === 'CastError') {
+      next(e);
       return;
     }
     next(e);
@@ -71,12 +71,8 @@ const likeCard = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(like);
   } catch (e) {
-    if (e.name === 'NotFoundError') {
-      next(new NotFoundError('Карточка по заданному ID не найдена'));
-      return;
-    }
-    if (e.name === 'CastError') {
-      next(new ValidationError('Передан не валидный ID'));
+    if (e instanceof NotFoundError || e.name === 'CastError') {
+      next(e);
       return;
     }
     next(e);
@@ -94,12 +90,8 @@ const disLikeCard = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(like);
   } catch (error) {
-    if (error.name === 'NotFoundError') {
-      next(new NotFoundError('Карточка по заданному ID не найдена'));
-      return;
-    }
-    if (error.name === 'CastError') {
-      next(new ValidationError('Передан не валидный ID'));
+    if (error instanceof NotFoundError || error.name === 'CastError') {
+      next(error);
       return;
     }
     next(error);

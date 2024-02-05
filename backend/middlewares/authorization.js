@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
     const validToken = token.replace('Bearer ', '');
     payload = jwt.verify(validToken, NODE_ENV !== 'production' ? 'jwt_secret' : JWT_SECRET);
   } catch (error) {
-    next(new AuthorizateError('С токеном что-то не так'));
+    return next(new AuthorizateError('С токеном что-то не так'));
   }
   req.user = payload;
   next();

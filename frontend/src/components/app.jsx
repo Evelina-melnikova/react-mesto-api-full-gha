@@ -190,6 +190,7 @@ export default function App() {
         removeLoader()
       });
   }
+  
 
   function handleAddCard(data) {
     showLoader();
@@ -207,37 +208,37 @@ export default function App() {
       });
   }
 
-  useEffect(() => {
-    if (isloggedIn) {
-      api.getUserInfo()
-        .then((data) => {
-          setCurrentUser(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      api.getAllCards()
-        .then(data => {
-          setCards(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [isloggedIn]);
+  // useEffect(() => {
+  //   if (isloggedIn) {
+  //     api.getUserInfo()
+  //       .then((data) => {
+  //         setCurrentUser(data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //     api.getAllCards()
+  //       .then(data => {
+  //         setCards(data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   }
+  // }, [isloggedIn]);
 
-  useEffect(() => {
-    const initialRoute = '/';
-    navigateRef.current(initialRoute);
-  }, []);
+  // useEffect(() => {
+  //   const initialRoute = '/';
+  //   navigateRef.current(initialRoute);
+  // }, []);
 
-  useEffect(() => {
-    const token = getToken();
+  // useEffect(() => {
+  //   const token = getToken();
 
-    if (token) {
-      auth(token);
-    }
-  }, [auth]);
+  //   if (token) {
+  //     auth(token);
+  //   }
+  // }, [auth]);
 
   React.useEffect(() => {
     const token = getToken();

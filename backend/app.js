@@ -20,15 +20,15 @@ app.use(reqLogger);
 app.use(cors);
 app.use(router);
 
+app.use('*', () => {
+  throw new NotFoundError('Такой страницы не существует');
+});
+
 app.use(errLogger);
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-});
-
-app.use('*', () => {
-  throw new NotFoundError('Такой страницы не существует');
 });
 
 app.use(errors());

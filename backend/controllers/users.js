@@ -108,11 +108,11 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const userAdmin = await User.findOne({ email }).select('+password').orFail(
-      () => new AuthorizateError('Неверно введены данные'),
+      () => new Error('AuthorizateError'),
     );
     const matched = await bcrypt.compare(password, userAdmin.password);
     if (!matched) {
-      throw new AuthorizateError('Неверно введены данные');
+      throw new Error('AuthorizateError');
     }
 
     const token = generateToken({ _id: userAdmin._id });
@@ -134,11 +134,11 @@ const UsersMe = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
     if (!user) {
-      throw new NotFoundError('Пользователь не найден');
+      throw new NotValidIdError('User not found');
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e.message === 'NotFoundError') {
+    if (e.message === 'User not found') {
       next(new NotValidIdError('Переданы невалидные данные'));
       return;
     }

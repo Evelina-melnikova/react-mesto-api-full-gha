@@ -118,7 +118,12 @@ const login = async (req, res, next) => {
     const token = generateToken({ _id: userAdmin._id });
     return res.status(HttpCodes.success).send(
       {
-        name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token,
+        name: userAdmin.name,
+        about: userAdmin.about,
+        avatar: userAdmin.avatar,
+        email: userAdmin.email,
+        id: userAdmin._id,
+        token,
       },
     );
   } catch (e) {

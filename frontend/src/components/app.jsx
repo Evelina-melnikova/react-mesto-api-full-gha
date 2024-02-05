@@ -67,9 +67,9 @@ export default function App() {
     setIsToolTipOpen(false);
   }
 
-  const auth = useCallback(async (token) => {
+  const auth = useCallback( async () => {
     try {
-      const res = await ApiAuth.getContent(token);
+      const res = await ApiAuth.getContent();
       if (res) {
         setIsLoggedIn(true);
         setUserEmail(res.data.email);

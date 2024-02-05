@@ -69,7 +69,7 @@ export default function App() {
       .then(() => {
         setIsSucsessed(true);
         setIsToolTipOpen(true);
-        navigate('/sign-in');
+        navigate('/');
       })
       .catch((err) => {
         setIsSucsessed(false);
@@ -237,7 +237,7 @@ export default function App() {
   //   }
   // }, [auth]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const token = getToken();
     if (token) {
       ApiAuth.getContent(token)

@@ -16,7 +16,7 @@ class Api {
     }
 
     getAllCards() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return this._getRequest(`${this._url}/cards`, {
             method: "GET",
             headers: {
@@ -26,7 +26,7 @@ class Api {
         });
     }
     createCard(data) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return this._getRequest(`${this._url}/cards`, {
             method: "POST",
             headers: {
@@ -41,7 +41,7 @@ class Api {
     }
 
     deleteCard(data) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return this._getRequest(`${this._url}/cards/${data}`, {
             method: "DELETE",
             headers: {
@@ -52,7 +52,7 @@ class Api {
     }
 
     getNewAvatar(item) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return this._getRequest(`${this._url}/users/me/avatar`, {
             method: "PATCH",
             headers: {
@@ -66,7 +66,7 @@ class Api {
     }
 
     setlikeApi(id, isLiked) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return isLiked
             ? this._getRequest(`${this._url}/cards/${id}/likes`, {
                 method: "PUT",
@@ -86,7 +86,7 @@ class Api {
 
 
     setUserInfo(data) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return this._getRequest(`${this._url}/users/me`, {
             method: "PATCH",
             headers: {
@@ -101,7 +101,7 @@ class Api {
     }
 
     getUserInfo() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return this._getRequest(`${this._url}/users/me`, {
             method: "GET",
             headers: {

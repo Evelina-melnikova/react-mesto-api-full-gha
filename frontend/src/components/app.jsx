@@ -132,11 +132,10 @@ export default function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api
-      .setlikeApi(card._id, !isLiked)
+
+    api.setlikeApi(card._id, !isLiked)
       .then((newCard) => {
-        setCards((state) => state.map((c) => (c._id === card._id ? newCard : c))
-        );
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
       .catch((err) => {
         console.log(err);
@@ -190,7 +189,6 @@ export default function App() {
         removeLoader()
       });
   }
-  
 
   function handleAddCard(data) {
     showLoader();

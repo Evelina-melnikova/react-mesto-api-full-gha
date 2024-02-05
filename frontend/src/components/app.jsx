@@ -242,7 +242,7 @@ export default function App() {
   React.useEffect(() => {
     const token = getToken();
     if (token) {
-      ApiAuth.getContent()
+      ApiAuth.getContent(token)
         .then((res) => {
           navigate("/");
           setUserEmail(res.email);

@@ -8,7 +8,7 @@ import Main from './main';
 import Footer from './footer';
 import ImagePopup from './image-popup';
 import AddPlacePopup from './add-place-popup';
-import {api} from '../utils/Api';
+import api from '../utils/Api';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import CardsContext from '../contexts/Cards.Context';
 import EditProfilePopup from './edit-profile-popup';

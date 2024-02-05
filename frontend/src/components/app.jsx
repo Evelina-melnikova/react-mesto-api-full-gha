@@ -100,6 +100,7 @@ export default function App() {
     setDeletePopup(true);
   }
 
+
   const closeAllPopups = () => {
     setEditAvatarPopup(false);
     setEditProfilePopup(false);
@@ -253,7 +254,7 @@ export default function App() {
           console.log(error);
         });
       api
-        .getUserInfoApi()
+        .getUserInfo()
         .then((data) => {
           setCurrentUser(data);
           setIsLoggedIn(true)

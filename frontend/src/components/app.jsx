@@ -66,13 +66,11 @@ export default function App() {
 
   const onRegister = (email, password) => {
     return ApiAuth.register(email, password)
-    .then((res) => {
-      if (res.jwt) {
-          setToken(res.jwt); // Сохраняем токен после успешной регистрации
-          setIsLoggedIn(true);
-          navigate('/');
-      }
-  })
+      .then(() => {
+        setIsSucsessed(true);
+        setIsToolTipOpen(true);
+        navigate('/signin');
+      })
       .catch((err) => {
         setIsSucsessed(false);
         setIsToolTipOpen(true);

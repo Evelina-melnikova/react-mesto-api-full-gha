@@ -4,6 +4,7 @@
 /* eslint-disable consistent-return */
 // eslint-disable-next-line import/no-extraneous-dependencies, import/order, import/no-unresolved
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
 const User = require('../models/user');
 const HttpCodes = require('../utils/constants');
@@ -31,7 +32,7 @@ const getUserById = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e.message === 'NotValidIdError') {
+    if (e instanceof mongoose.Error.CastError) {
       next(new NotValidIdError({ message: e.message }));
     } else {
       next(e);
@@ -50,10 +51,12 @@ const createUser = async (req, res, next) => {
     });
   } catch (e) {
     if (e.code === HttpCodes.duplicate) {
-      next(new ConflictError('Такой пользователь уже существует'));
-      return;
+      next(new ConflictError({ message: 'Пользователь уже существует' }));
+    } else if (e instanceof mongoose.Error.ValidationError) {
+      next(new ConflictError({ message: e.message }));
+    } else {
+      next(e);
     }
-    next(e);
   }
 };
 

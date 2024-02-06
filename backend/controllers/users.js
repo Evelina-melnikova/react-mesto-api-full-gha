@@ -1,8 +1,7 @@
+/* eslint-disable consistent-return */
 /* eslint-disable object-curly-newline */
 /* eslint-disable object-property-newline */
 /* eslint-disable max-len */
-/* eslint-disable consistent-return */
-// eslint-disable-next-line import/no-extraneous-dependencies, import/order, import/no-unresolved
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
@@ -70,7 +69,7 @@ const updateUser = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(updateUserProfile);
   } catch (e) {
-    if (e.message === 'NotValidIdError') {
+    if (e instanceof mongoose.Error.ValidationError) {
       next(new NotValidIdError({ message: e.message }));
     } else {
       next(e);
@@ -88,7 +87,7 @@ const updateUserAvatar = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(updateUserAvatr);
   } catch (e) {
-    if (e.message === 'NotValidIdError') {
+    if (e instanceof mongoose.Error.ValidationError) {
       next(new NotValidIdError({ message: e.message }));
     } else {
       next(e);
@@ -128,7 +127,7 @@ const UsersMe = async (req, res, next) => {
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e.message === 'NotValidIdError') {
+    if (e instanceof mongoose.Error.ValidationError) {
       next(new NotValidIdError('Переданы невалидные данные'));
       return;
     }

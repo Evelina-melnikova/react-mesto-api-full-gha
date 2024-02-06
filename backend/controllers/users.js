@@ -4,7 +4,6 @@
 /* eslint-disable consistent-return */
 // eslint-disable-next-line import/no-extraneous-dependencies, import/order, import/no-unresolved
 const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
 
 const User = require('../models/user');
 const HttpCodes = require('../utils/constants');
@@ -32,7 +31,7 @@ const getUserById = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e instanceof mongoose.Error.CastError) {
+    if (e.message === 'NotValidIdError') {
       next(new NotValidIdError({ message: e.message }));
     } else {
       next(e);
@@ -68,7 +67,7 @@ const updateUser = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(updateUserProfile);
   } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
+    if (e.message === 'NotValidIdError') {
       next(new NotValidIdError({ message: e.message }));
     } else {
       next(e);
@@ -86,7 +85,7 @@ const updateUserAvatar = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(updateUserAvatr);
   } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
+    if (e.message === 'NotValidIdError') {
       next(new NotValidIdError({ message: e.message }));
     } else {
       next(e);
@@ -110,7 +109,7 @@ const login = async (req, res, next) => {
       { name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token },
     );
   } catch (e) {
-    if (e instanceof AuthorizateError) {
+    if (e.message === 'AuthorizateError') {
       next(new AuthorizateError('Неверно введены данные'));
       return;
     }
@@ -126,7 +125,7 @@ const UsersMe = async (req, res, next) => {
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e instanceof NotValidIdError) {
+    if (e.message === 'NotValidIdError') {
       next(new NotValidIdError('Переданы невалидные данные'));
       return;
     }

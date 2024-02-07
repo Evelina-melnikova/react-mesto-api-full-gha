@@ -47,18 +47,14 @@ const deleteCard = async (req, res, next) => {
           return next(new DeleteError('У Вас нет прав на удаление данной карточки'));
         }
       });
-  } catch (e) {
-    if (e instanceof NotFoundError) {
-      next(e);
-      return;
+    } catch (e) {
+      if (e instanceof mongoose.Error.CastError) {
+        next(new ValidationError('Передан невалидный ID'));
+      } else {
+        next(e);
+      }
     }
-    if (e instanceof ValidationError || e.name === 'CastError') {
-      next(e);
-      return;
-    }
-    next(e);
-  }
-};
+  };
 
 const likeCard = async (req, res, next) => {
   try {
@@ -71,11 +67,11 @@ const likeCard = async (req, res, next) => {
     );
     return res.status(HttpCodes.success).send(like);
   } catch (e) {
-    if (e instanceof NotFoundError || e.name === 'CastError') {
+    if (e instanceof mongoose.Error.CastError) {
+      next(new ValidationError('Передан не валидный ID'));
+    } else {
       next(e);
-      return;
     }
-    next(e);
   }
 };
 
@@ -89,12 +85,12 @@ const disLikeCard = async (req, res, next) => {
       () => new NotFoundError('Карточка по заданному ID не найдена'),
     );
     return res.status(HttpCodes.success).send(like);
-  } catch (error) {
-    if (error instanceof NotFoundError || error.name === 'CastError') {
-      next(error);
-      return;
+  } catch (e) {
+    if (e instanceof mongoose.Error.CastError) {
+      next(new ValidationError('Передан не валидный ID'));
+    } else {
+      next(e);
     }
-    next(error);
   }
 };
 

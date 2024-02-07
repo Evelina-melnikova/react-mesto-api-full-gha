@@ -9,7 +9,7 @@ const User = require('../models/user');
 const HttpCodes = require('../utils/constants');
 const generateToken = require('../utils/token');
 
-const NotValidIdError = require('../utils/validationError');
+const ValidationError = require('../utils/validationError');
 const ConflictError = require('../utils/conflictError');
 const AuthorizateError = require('../utils/authorizateError');
 const NotFoundError = require('../utils/notFoundError');
@@ -32,7 +32,7 @@ const getUserById = async (req, res, next) => {
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
     if (e instanceof mongoose.Error.CastError) {
-      next(new NotValidIdError({ message: e.message }));
+      next(new ValidationError('Передан не валидный ID'));
     } else {
       next(e);
     }
@@ -52,7 +52,7 @@ const createUser = async (req, res, next) => {
     if (e.code === HttpCodes.duplicate) {
       next(new ConflictError({ message: 'Пользователь уже существует' }));
     } else if (e instanceof mongoose.Error.ValidationError) {
-      next(new ConflictError({ message: e.message }));
+      next(new ValidationError('Передан не валидный ID'));
     } else {
       next(e);
     }
@@ -70,7 +70,7 @@ const updateUser = async (req, res, next) => {
     return res.status(HttpCodes.success).send(updateUserProfile);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      next(new NotValidIdError({ message: e.message }));
+      next(new ValidationError('Передан не валидный ID'));
     } else {
       next(e);
     }
@@ -88,7 +88,7 @@ const updateUserAvatar = async (req, res, next) => {
     return res.status(HttpCodes.success).send(updateUserAvatr);
   } catch (e) {
     if (e instanceof mongoose.Error.ValidationError) {
-      next(new NotValidIdError({ message: e.message }));
+      next(new ValidationError('Пользователь по заданному ID не найден'));
     } else {
       next(e);
     }
@@ -111,10 +111,6 @@ const login = async (req, res, next) => {
       { name: userAdmin.name, about: userAdmin.about, avatar: userAdmin.avatar, email: userAdmin.email, id: userAdmin._id, token },
     );
   } catch (e) {
-    if (e.message === 'AuthorizateError') {
-      next(new AuthorizateError('Неверно введены данные'));
-      return;
-    }
     next(e);
   }
 };
@@ -127,14 +123,13 @@ const UsersMe = async (req, res, next) => {
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e instanceof mongoose.Error.ValidationError) {
-      next(new NotValidIdError('Переданы невалидные данные'));
-      return;
+    if (e instanceof NotFoundError) {
+      next(new NotFoundError('Пользователь не найден'));
+    } else {
+      next(e);
     }
-    next(e);
   }
 };
-
 module.exports = {
   getUsers,
   getUserById,

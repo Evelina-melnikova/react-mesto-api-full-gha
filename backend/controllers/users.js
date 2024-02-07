@@ -123,13 +123,10 @@ const UsersMe = async (req, res, next) => {
     }
     return res.status(HttpCodes.success).send(user);
   } catch (e) {
-    if (e instanceof NotFoundError) {
-      next(new NotFoundError('Пользователь не найден'));
-    } else {
-      next(e);
-    }
+    next(e);
   }
 };
+
 module.exports = {
   getUsers,
   getUserById,
